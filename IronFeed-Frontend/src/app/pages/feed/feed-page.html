@@ -1,0 +1,54 @@
+<main class="min-h-screen bg-zinc-950 text-zinc-100">
+  <section class="mx-auto grid min-h-screen max-w-7xl grid-cols-[220px_minmax(0,1fr)_320px]">
+    <app-sidebar-nav />
+
+    <section class="border-r border-zinc-800/80 bg-zinc-950/40 backdrop-blur-sm">
+      <header class="border-b border-zinc-800/80 px-6 py-6">
+        <h2 class="text-2xl font-black tracking-[-0.04em] text-zinc-50">Feed</h2>
+        <p class="mt-1 text-sm font-medium text-zinc-500">
+          Entrenamientos, progreso y marcas personales.
+        </p>
+      </header>
+
+      <app-post-composer />
+
+      @if (isLoading()) {
+        <section class="border-b border-zinc-800/80 px-6 py-10 text-sm font-bold text-zinc-500">
+          Cargando feed...
+        </section>
+      } @else if (errorMessage()) {
+        <section class="border-b border-zinc-800/80 px-6 py-10">
+          <p class="text-sm font-bold text-yellow-400">{{ errorMessage() }}</p>
+
+          <button
+            class="mt-4 rounded-full border border-yellow-400/60 px-4 py-2 text-sm font-black text-yellow-400 transition hover:bg-yellow-400 hover:text-zinc-950"
+            type="button"
+            (click)="loadFeed()"
+          >
+            Reintentar
+          </button>
+        </section>
+      } @else {
+        @if (usersErrorMessage()) {
+          <section class="border-b border-yellow-400/20 bg-yellow-400/10 px-6 py-3 text-sm font-bold text-yellow-400">
+            {{ usersErrorMessage() }}
+          </section>
+        }
+
+        <app-post-list [posts]="posts()" [authors]="users()" />
+      }
+    </section>
+
+    <aside class="px-6 py-8">
+      <div class="sticky top-8">
+        @if (exercisesErrorMessage()) {
+          <p class="mb-4 rounded-2xl border border-yellow-400/20 bg-yellow-400/10 px-4 py-3 text-sm font-bold text-yellow-400">
+            {{ exercisesErrorMessage() }}
+          </p>
+        }
+
+        <app-featured-exercises [exercises]="exercises()" />
+      </div>
+    </aside>
+  </section>
+</main>
