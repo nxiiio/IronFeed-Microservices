@@ -1,6 +1,7 @@
 package cl.worellana.posts_ms.service;
 
 import cl.worellana.posts_ms.model.dto.request.PostRequest;
+import cl.worellana.posts_ms.model.dto.response.PostPageResponse;
 import cl.worellana.posts_ms.model.dto.response.PostResponse;
 
 import java.util.List;
@@ -17,4 +18,8 @@ public interface PostService {
     List<PostResponse> findAll();
 
     List<PostResponse> findAllByUserId(UUID userId);
+
+    PostPageResponse findAll(Integer page, Integer size);
+
+    PostPageResponse findAllByUserId(UUID userId, Integer page, Integer size);
 }

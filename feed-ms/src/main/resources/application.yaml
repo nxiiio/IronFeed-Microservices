@@ -1,0 +1,13 @@
+server:
+  port: 8085
+
+spring:
+  output:
+    ansi:
+      enabled: always
+  application:
+    name: feed-ms
+
+clients:
+  posts-ms:
+    url: http://localhost:8084
