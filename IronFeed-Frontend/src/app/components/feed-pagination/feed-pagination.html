@@ -1,0 +1,28 @@
+<nav class="pagination-shell flex items-center justify-between gap-4" aria-label="Paginación del feed">
+  <button
+    class="pagination-button pagination-button-muted"
+    type="button"
+    [disabled]="!canGoPrevious()"
+    (click)="previousPage.emit()"
+  >
+    Anterior
+  </button>
+
+  <div class="rounded-2xl border border-zinc-800 bg-zinc-950/80 px-5 py-3 text-center shadow-inner shadow-black/20">
+    <p class="text-sm font-black tracking-[-0.03em] text-zinc-100">
+      Página {{ currentPage() }} de {{ totalPages() }}
+    </p>
+    <p class="mt-1 text-[11px] font-black uppercase tracking-[0.2em] text-zinc-600">
+      {{ totalElements() }} posts
+    </p>
+  </div>
+
+  <button
+    class="pagination-button pagination-button-primary"
+    type="button"
+    [disabled]="!canGoNext()"
+    (click)="nextPage.emit()"
+  >
+    Siguiente
+  </button>
+</nav>
