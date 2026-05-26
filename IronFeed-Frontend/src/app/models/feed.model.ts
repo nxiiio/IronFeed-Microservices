@@ -1,6 +1,6 @@
 import { Post } from './post.model';
 
-export interface FeedResponse {
+export interface Feed {
   items: Post[];
   page: number;
   size: number;
