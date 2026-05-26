@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core';
 import { catchError, forkJoin, of } from 'rxjs';
 
+import { FeedHeader } from '../../components/feed-header/feed-header';
+import { FeedLoadingSkeleton } from '../../components/feed-loading-skeleton/feed-loading-skeleton';
 import { FeedPagination } from '../../components/feed-pagination/feed-pagination';
 import { FeaturedExercises } from '../../components/featured-exercises/featured-exercises';
 import { PostComposer } from '../../components/post-composer/post-composer';
@@ -9,11 +11,20 @@ import { SidebarNav } from '../../components/sidebar-nav/sidebar-nav';
 import { AppUser, Exercise, Post } from '../../models';
 import { ExercisesService } from '../../services/exercises.service';
 import { PostsService } from '../../services/posts.service';
+import { ToastService } from '../../services/toast.service';
 import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'app-feed-page',
-  imports: [FeedPagination, FeaturedExercises, PostComposer, PostList, SidebarNav],
+  imports: [
+    FeedHeader,
+    FeedLoadingSkeleton,
+    FeedPagination,
+    FeaturedExercises,
+    PostComposer,
+    PostList,
+    SidebarNav
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './feed-page.html',
   styleUrl: './feed-page.css'
@@ -21,6 +32,7 @@ import { UsersService } from '../../services/users.service';
 export class FeedPage implements OnInit {
   private readonly exercisesService = inject(ExercisesService);
   private readonly postsService = inject(PostsService);
+  private readonly toastService = inject(ToastService);
   private readonly usersService = inject(UsersService);
 
   readonly exercises = signal<Exercise[]>([]);
@@ -59,14 +71,23 @@ export class FeedPage implements OnInit {
     forkJoin({
       exercises: this.exercisesService.findAll().pipe(
         catchError(() => {
-          this.exercisesErrorMessage.set('No pudimos cargar ejercicios destacados.');
+          const message = 'No pudimos cargar ejercicios destacados.';
+          console.log("Error al cargar ejercicios:", message);
+
+          this.exercisesErrorMessage.set(message);
+          this.toastService.showError(message, 'Ejercicios no disponibles');
+
           return of([]);
         })
       ),
       feed: this.postsService.findPage(requestedPage, this.pageSize),
       users: this.usersService.findAll().pipe(
         catchError(() => {
-          this.usersErrorMessage.set('No pudimos cargar los usuarios. Algunos posts pueden aparecer sin autor.');
+          const message = 'No pudimos cargar los usuarios. Algunos posts pueden aparecer sin autor.';
+
+          this.usersErrorMessage.set(message);
+          this.toastService.showError(message, 'Usuarios no disponibles');
+
           return of([]);
         })
       )
@@ -81,7 +102,10 @@ export class FeedPage implements OnInit {
         this.isLoading.set(false);
       },
       error: () => {
-        this.errorMessage.set('No pudimos cargar los posts del feed.');
+        const message = 'No pudimos cargar los posts del feed.';
+
+        this.errorMessage.set(message);
+        this.toastService.showError(message, 'Feed no disponible');
         this.isLoading.set(false);
       }
     });
