@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import { Exercise } from '../../models';
+import { Exercise } from '../../../../shared/models';
 
 @Component({
   selector: 'app-featured-exercises',

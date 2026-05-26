@@ -8,10 +8,10 @@ import { FeaturedExercises } from '../../components/featured-exercises/featured-
 import { PostComposer } from '../../components/post-composer/post-composer';
 import { PostList } from '../../components/post-list/post-list';
 import { SidebarNav } from '../../components/sidebar-nav/sidebar-nav';
-import { AppUser, Exercise, Post } from '../../models';
+import { AppUser, Exercise, Post } from '../../../../shared/models';
 import { ExercisesService } from '../../services/exercises.service';
 import { PostsService } from '../../services/posts.service';
-import { ToastService } from '../../services/toast.service';
+import { ToastService } from '../../../../core/services/toast.service';
 import { UsersService } from '../../services/users.service';
 
 @Component({

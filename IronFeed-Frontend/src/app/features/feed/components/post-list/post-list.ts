@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import { AppUser, Post } from '../../models';
+import { AppUser, Post } from '../../../../shared/models';
 import { PostCard } from '../post-card/post-card';
 
 @Component({

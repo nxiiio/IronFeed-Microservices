@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
-import { AppUser, Post } from '../../models';
+import { AppUser, Post } from '../../../../shared/models';
 
 @Component({
   selector: 'app-post-card',

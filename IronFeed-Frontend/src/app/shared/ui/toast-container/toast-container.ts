@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
-import { ToastService, type ToastType } from '../../services/toast.service';
+import { ToastService, type ToastType } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-toast-container',
