@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { catchError, forkJoin, of } from 'rxjs';
 
 import { FeedHeader } from '../../components/feed-header/feed-header';
@@ -48,12 +48,6 @@ export class FeedPage implements OnInit {
   readonly totalPages = signal(0);
   readonly totalElements = signal(0);
   readonly pageSize = 10;
-
-  readonly visibleTotalPages = computed(() => Math.max(this.totalPages(), 1));
-  readonly canGoPrevious = computed(() => this.currentPage() > 1 && !this.isLoading());
-  readonly canGoNext = computed(() =>
-    this.totalPages() > 0 && this.currentPage() < this.totalPages() && !this.isLoading()
-  );
 
   ngOnInit(): void {
     this.loadFeed();
@@ -109,22 +103,5 @@ export class FeedPage implements OnInit {
         this.isLoading.set(false);
       }
     });
-  }
-
-  // Botones de paginación
-  goToPreviousPage(): void {
-    if (!this.canGoPrevious()) {
-      return;
-    }
-
-    this.loadFeed(this.currentPage() - 1);
-  }
-
-  goToNextPage(): void {
-    if (!this.canGoNext()) {
-      return;
-    }
-
-    this.loadFeed(this.currentPage() + 1);
   }
 }

@@ -38,12 +38,10 @@
 
         <app-feed-pagination
           [currentPage]="currentPage()"
-          [totalPages]="visibleTotalPages()"
+          [totalPages]="totalPages()"
           [totalElements]="totalElements()"
-          [canGoPrevious]="canGoPrevious()"
-          [canGoNext]="canGoNext()"
-          (previousPage)="goToPreviousPage()"
-          (nextPage)="goToNextPage()"
+          [isLoading]="isLoading()"
+          (pageChange)="loadFeed($event)"
         />
       }
     </section>

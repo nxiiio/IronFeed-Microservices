@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-feed-pagination',
@@ -13,9 +13,29 @@ export class FeedPagination {
   currentPage = input.required<number>();
   totalPages = input.required<number>();
   totalElements = input.required<number>();
-  canGoPrevious = input(false);
-  canGoNext = input(false);
+  isLoading = input(false);
 
-  previousPage = output<void>();
-  nextPage = output<void>();
+  pageChange = output<number>();
+
+  readonly visibleTotalPages = computed(() => Math.max(this.totalPages(), 1));
+  readonly canGoPrevious = computed(() => this.currentPage() > 1 && !this.isLoading());
+  readonly canGoNext = computed(() =>
+    this.totalPages() > 0 && this.currentPage() < this.totalPages() && !this.isLoading()
+  );
+
+  goToPreviousPage(): void {
+    if (!this.canGoPrevious()) {
+      return;
+    }
+
+    this.pageChange.emit(this.currentPage() - 1);
+  }
+
+  goToNextPage(): void {
+    if (!this.canGoNext()) {
+      return;
+    }
+
+    this.pageChange.emit(this.currentPage() + 1);
+  }
 }
