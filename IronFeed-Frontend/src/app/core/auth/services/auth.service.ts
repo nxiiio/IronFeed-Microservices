@@ -2,26 +2,29 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 
-import { environment } from '../../../environments/environment';
-import { AuthSession, LoginRequest, LoginResponse } from './auth-session.model';
+import { environment } from '../../../../environments/environment';
+import { AuthSession, LoginRequest, LoginResponse } from '../models/auth-session.model';
 import { AuthStorageService } from './auth-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  // URL Auth
+  private readonly URL = `${environment.apiGatewayUrl}/api/auth`;
+
   private readonly http = inject(HttpClient);
   private readonly authStorage = inject(AuthStorageService);
-  private readonly authUrl = `${environment.apiGatewayUrl}/api/auth`;
-  private readonly sessionState = signal<AuthSession | null>(this.authStorage.readSession());
+  
+  // puede ser sessionStorage o localStorage
+  private readonly sessionState = signal<AuthSession | null>(this.authStorage.readSession()); 
 
   readonly currentUser = computed(() => this.sessionState()?.user ?? null);
-  readonly isAuthenticated = computed(() => this.sessionState() !== null);
 
-  login(credentials: LoginRequest, rememberSession: boolean): Observable<LoginResponse> {
+  login(credentials: LoginRequest, usePersistentSession: boolean): Observable<LoginResponse> {
     return this.http
-      .post<LoginResponse>(`${this.authUrl}/login`, credentials)
-      .pipe(tap((response) => this.saveSession(response, rememberSession)));
+      .post<LoginResponse>(`${this.URL}/login`, credentials)
+      .pipe(tap((response) => this.saveSession(response, usePersistentSession)));
   }
 
   logout(): void {
@@ -37,7 +40,7 @@ export class AuthService {
     return this.sessionState() !== null;
   }
 
-  private saveSession(response: LoginResponse, rememberSession: boolean): void {
+  private saveSession(response: LoginResponse, usePersistentSession: boolean): void {
     const session: AuthSession = {
       accessToken: response.accessToken,
       tokenType: response.tokenType,
@@ -46,6 +49,6 @@ export class AuthService {
     };
 
     this.sessionState.set(session);
-    this.authStorage.saveSession(session, rememberSession);
+    this.authStorage.saveSession(session, usePersistentSession);
   }
 }

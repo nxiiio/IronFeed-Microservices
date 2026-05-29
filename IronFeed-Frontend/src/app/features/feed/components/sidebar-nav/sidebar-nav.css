@@ -1,3 +1,65 @@
 :host {
   display: block;
 }
+
+.sidebar-session {
+  display: grid;
+  gap: 0.875rem;
+  padding-top: 2.5rem;
+}
+
+.sidebar-user-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  overflow: hidden;
+  border: 1px solid rgb(250 204 21 / 0.18);
+  border-radius: 1.35rem;
+  background:
+    radial-gradient(circle at top right, rgb(250 204 21 / 0.14), transparent 42%),
+    rgb(24 24 27 / 0.62);
+  padding: 0.85rem;
+  box-shadow: 0 18px 40px rgb(0 0 0 / 0.22);
+}
+
+.sidebar-avatar {
+  display: grid;
+  flex: 0 0 auto;
+  width: 2.65rem;
+  height: 2.65rem;
+  place-items: center;
+  border-radius: 1rem;
+  background: rgb(250 204 21);
+  color: rgb(9 9 11);
+  font-size: 0.8rem;
+  font-weight: 1000;
+  letter-spacing: -0.04em;
+  box-shadow: 0 0 28px rgb(250 204 21 / 0.22);
+}
+
+.sidebar-logout-button {
+  width: 100%;
+  border: 1px solid rgb(250 204 21 / 0.22);
+  border-radius: 1.15rem;
+  background: rgb(250 204 21 / 0.08);
+  padding: 0.85rem 1rem;
+  color: rgb(250 204 21);
+  font-size: 0.8rem;
+  font-weight: 1000;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.sidebar-logout-button:hover {
+  transform: translateY(-2px);
+  border-color: rgb(250 204 21 / 0.48);
+  background: rgb(250 204 21 / 0.14);
+  box-shadow: 0 16px 36px rgb(250 204 21 / 0.1);
+}
+
+.sidebar-logout-button:active {
+  transform: translateY(0);
+}

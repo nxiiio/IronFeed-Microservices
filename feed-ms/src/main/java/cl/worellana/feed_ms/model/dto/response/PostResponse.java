@@ -16,6 +16,7 @@ public class PostResponse {
 
     private UUID id;
     private UUID authorId;
+    private AuthorResponse author;
     private PostType type;
     private UUID workoutSessionId;
     private UUID personalRecordId;

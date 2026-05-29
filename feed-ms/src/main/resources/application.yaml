@@ -11,3 +11,5 @@ spring:
 clients:
   posts-ms:
     url: http://localhost:8084
+  users-ms:
+    url: http://localhost:8081

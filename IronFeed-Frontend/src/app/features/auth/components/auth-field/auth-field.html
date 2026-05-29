@@ -1,0 +1,10 @@
+<label class="auth-field">
+  <span>{{ label() }}</span>
+  <ng-content />
+</label>
+
+@if (errorMessage()) {
+  <p [id]="errorId()" class="auth-error-message">
+    {{ errorMessage() }}
+  </p>
+}

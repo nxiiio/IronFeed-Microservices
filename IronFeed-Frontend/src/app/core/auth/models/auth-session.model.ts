@@ -1,4 +1,4 @@
-import { AppUser } from '../../shared/models';
+import { AppUser } from '../../../shared/models/app-user.model';
 
 export interface LoginRequest {
   email: string;
