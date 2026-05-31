@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
-import { catchError, forkJoin, of } from 'rxjs';
+import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
 
 import { FeedHeader } from '../../components/feed-header/feed-header';
 import { FeedLoadingSkeleton } from '../../components/feed-loading-skeleton/feed-loading-skeleton';
@@ -36,12 +36,12 @@ export class FeedPage implements OnInit {
   private readonly usersService = inject(UsersService);
 
   readonly exercises = signal<Exercise[]>([]);
-  readonly users = signal<AppUser[]>([]);
+  readonly authors = signal<AppUser[]>([]);
   readonly posts = signal<Post[]>([]);
   readonly isLoading = signal(true);
   readonly errorMessage = signal<string | null>(null);
   readonly exercisesErrorMessage = signal<string | null>(null);
-  readonly usersErrorMessage = signal<string | null>(null);
+  readonly authorsErrorMessage = signal<string | null>(null);
 
   // Paginacion
   readonly currentPage = signal(1);
@@ -60,7 +60,7 @@ export class FeedPage implements OnInit {
     this.currentPage.set(requestedPage);
     this.errorMessage.set(null);
     this.exercisesErrorMessage.set(null);
-    this.usersErrorMessage.set(null);
+    this.authorsErrorMessage.set(null);
 
     forkJoin({
       exercises: this.exercisesService.findAll().pipe(
@@ -74,25 +74,35 @@ export class FeedPage implements OnInit {
           return of([]);
         })
       ),
-      feed: this.postsService.findPage(requestedPage, this.pageSize),
-      users: this.usersService.findAll().pipe(
-        catchError(() => {
-          const message = 'No pudimos cargar los usuarios. Algunos posts pueden aparecer sin autor.';
+      feed: this.postsService.findPage(requestedPage, this.pageSize)
+    }).pipe(
+      switchMap(({ exercises, feed }) => {
+        const authorIds = this.getUniqueAuthorIds(feed.items);
 
-          this.usersErrorMessage.set(message);
-          this.toastService.showError(message, 'Usuarios no disponibles');
+        if (authorIds.length === 0) {
+          return of({ exercises, feed, authors: [] });
+        }
 
-          return of([]);
-        })
-      )
-    }).subscribe({
-      next: ({ exercises, feed, users }) => {
+        return this.usersService.findByIds(authorIds).pipe(
+          map((authors) => ({ exercises, feed, authors })),
+          catchError(() => {
+            const message = 'No pudimos cargar los autores. Algunos posts pueden aparecer sin autor.';
+
+            this.authorsErrorMessage.set(message);
+            this.toastService.showError(message, 'Autores no disponibles');
+
+            return of({ exercises, feed, authors: [] });
+          })
+        );
+      })
+    ).subscribe({
+      next: ({ exercises, feed, authors }) => {
         this.exercises.set(exercises.slice(0, 3));
         this.posts.set(feed.items);
+        this.authors.set(authors);
         this.currentPage.set(feed.page);
         this.totalPages.set(feed.totalPages);
         this.totalElements.set(feed.totalElements);
-        this.users.set(users);
         this.isLoading.set(false);
       },
       error: () => {
@@ -103,5 +113,9 @@ export class FeedPage implements OnInit {
         this.isLoading.set(false);
       }
     });
+  }
+
+  private getUniqueAuthorIds(posts: Post[]): string[] {
+    return Array.from(new Set(posts.map((post) => post.authorId)));
   }
 }

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -14,5 +14,15 @@ export class UsersService {
 
   findAll(): Observable<AppUser[]> {
     return this.http.get<AppUser[]>(this.usersUrl);
+  }
+
+  findByIds(ids: string[]): Observable<AppUser[]> {
+    let params = new HttpParams();
+
+    ids.forEach((id) => {
+      params = params.append('ids', id);
+    });
+
+    return this.http.get<AppUser[]>(this.usersUrl, { params });
   }
 }

@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 import { AppUser, Post } from '../../../../shared/models';
+import { ProfileHoverCard } from '../profile-hover-card/profile-hover-card';
 
 @Component({
   selector: 'app-post-card',
+  imports: [ProfileHoverCard],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'block border-b border-zinc-800/70 px-6 py-5 transition-colors hover:bg-zinc-900/35'
@@ -14,6 +16,7 @@ import { AppUser, Post } from '../../../../shared/models';
 export class PostCard {
   post = input.required<Post>();
   author = input<AppUser | null>(null);
+  profileTooltipId = computed(() => `post-author-tooltip-${this.post().id}`);
 
   authorName = computed(() => {
     const author = this.author();
