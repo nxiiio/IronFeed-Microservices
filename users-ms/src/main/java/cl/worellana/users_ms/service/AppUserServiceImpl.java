@@ -38,6 +38,14 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<AppUserResponse> findAllById(List<UUID> ids) {
+        return appUserRepository.findAllById(ids.stream().distinct().toList()).stream()
+                .map(AppUserResponse::from)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<AppUserResponse> findAll() {
         return appUserRepository.findAll().stream()
                 .map(AppUserResponse::from)

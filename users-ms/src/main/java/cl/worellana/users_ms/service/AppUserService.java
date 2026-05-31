@@ -9,6 +9,7 @@ import java.util.UUID;
 public interface AppUserService {
     AppUserResponse findById(UUID id);
     AppUserResponse findByUsername(String username);
+    List<AppUserResponse> findAllById(List<UUID> ids);
     List<AppUserResponse> findAll();
     AppUserResponse updateProfile(UUID id, AppUserProfileRequest request);
 }

@@ -22,7 +22,11 @@ public class AppUserController {
 
     @GetMapping
     public ResponseEntity<List<AppUserResponse>> findAll(
+            @RequestParam(required = false) List<UUID> ids,
             @RequestParam(required = false) String username) {
+        if (ids != null) {
+            return ResponseEntity.ok(appUserService.findAllById(ids));
+        }
         if (username != null) {
             return ResponseEntity.ok(List.of(appUserService.findByUsername(username)));
         }

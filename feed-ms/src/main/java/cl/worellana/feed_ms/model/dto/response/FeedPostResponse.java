@@ -12,10 +12,10 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostResponse {
+public class FeedPostResponse {
 
     private UUID id;
-    private UUID authorId;
+    private AuthorResponse author;
     private PostType type;
     private UUID workoutSessionId;
     private UUID personalRecordId;

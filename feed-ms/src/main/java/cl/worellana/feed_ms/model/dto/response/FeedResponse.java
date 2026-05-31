@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class FeedResponse {
 
-    private List<PostResponse> items;
+    private List<FeedPostResponse> items;
     private int page;
     private int size;
     private long totalElements;
