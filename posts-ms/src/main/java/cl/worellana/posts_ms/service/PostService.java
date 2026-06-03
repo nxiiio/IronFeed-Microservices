@@ -4,7 +4,6 @@ import cl.worellana.posts_ms.model.dto.request.PostRequest;
 import cl.worellana.posts_ms.model.dto.response.PostPageResponse;
 import cl.worellana.posts_ms.model.dto.response.PostResponse;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface PostService {
@@ -14,10 +13,6 @@ public interface PostService {
     PostResponse findById(UUID id);
 
     void delete(UUID id);
-
-    List<PostResponse> findAll();
-
-    List<PostResponse> findAllByUserId(UUID userId);
 
     PostPageResponse findAll(Integer page, Integer size);
 

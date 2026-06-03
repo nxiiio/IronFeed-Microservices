@@ -6,7 +6,7 @@ These instructions apply to the entire repository.
 
 ## Project Overview
 
-IronFeed is a fitness social network built as a **Spring Boot microservices backend** plus an **Angular frontend**. The long-term architecture remains Event-Driven, but the current implementation is incremental and not every roadmap component is active.
+IronFeed is a fitness social network built as a **Spring Boot microservices backend** plus an **Angular frontend**. The current architecture is intentionally synchronous and simple: REST through the API Gateway, PostgreSQL per persistence-owning microservice, and no Kafka or dedicated feed service.
 
 Always verify the existing directories and code before claiming what is implemented. The project has changed significantly over time; older docs can be stale.
 
@@ -20,8 +20,7 @@ These modules currently exist in the repository:
 | `users-ms` | Registration, login, JWT issuing, profile and user-owned data | Microservice | `8081` |
 | `workout-ms` | Exercises, routines, workout sessions, personal records | Microservice | `8082` |
 | `social-ms` | Follow/unfollow relationships | Microservice | `8083` |
-| `posts-ms` | Posts, reactions, comments | Microservice | `8084` |
-| `feed-ms` | Early global feed over posts | Microservice | `8085` |
+| `posts-ms` | Posts, reactions, comments, and global paginated feed | Microservice | `8084` |
 | `IronFeed-Frontend` | Angular client for auth and feed UI | Frontend application | Angular dev server when explicitly started |
 
 Pending microservices:
@@ -34,7 +33,7 @@ Pending microservices:
 
 ## Working Directory and Commands
 
-For commands, work from the specific module being changed, for example `users-ms/`, `posts-ms/`, `feed-ms/`, `api-gateway/`, or `IronFeed-Frontend/`.
+For commands, work from the specific module being changed, for example `users-ms/`, `posts-ms/`, `api-gateway/`, or `IronFeed-Frontend/`.
 
 ```bash
 ./mvnw spring-boot:run          # start the selected Spring module only when explicitly requested
@@ -53,8 +52,8 @@ docker compose up -d
 - Each persistence-owning microservice owns its own PostgreSQL database.
 - Never design shared databases or cross-service joins.
 - Cross-service user references are logical UUID references, not physical foreign keys.
-- Cross-service consistency will be handled by events later, not database-level foreign keys.
-- Kafka and full event distribution remain deferred.
+- Cross-service consistency must not rely on database-level foreign keys across services.
+- Do not introduce Kafka, messaging infrastructure, or event distribution.
 - Personal records are auto-detected by the workout service; users do not report them manually.
 - Challenge progress is auto-updated from workout sessions; users do not report it manually.
 - `users-ms` currently issues JWTs.
@@ -63,19 +62,16 @@ docker compose up -d
 
 ## Current Feed Phase
 
-- `feed-ms` is currently a **fase temprana** service.
-- It exposes a global paginated feed through `GET /api/feed`.
-- It consumes `posts-ms` through HTTP/Feign.
-- It does **not** own a `feed_db`.
-- It does **not** use a `feed_item` read model yet.
-- It does **not** use Kafka yet.
+- `feed-ms` has been removed permanently.
+- `posts-ms` owns the current global paginated feed.
+- `GET /api/posts/page` is the current paginated feed endpoint and is routed through `api-gateway` to `posts-ms`.
+- The feed does **not** use a separate `feed_db`, read model, Kafka, or event distribution.
 - Public pagination is one-based: clients request `page=1` for the first page.
 
 ## Deferred Infrastructure
 
 The following are roadmap items only. Do **not** implement or expand them unless the user explicitly asks:
 
-- Kafka or any messaging/event infrastructure.
 - Testcontainers or test infrastructure.
 - Service discovery, Eureka, or new Spring Cloud infrastructure beyond the current gateway and Feign usage.
 - Additional API Gateway infrastructure beyond explicitly requested route/error/security changes.
@@ -130,7 +126,7 @@ Before refactoring structure, verify the existing package organization and prese
 - Do not modify `.docs/functional-requirements.md` unless the user explicitly asks.
 - Check `.docs/db-architecture.md` before making persistence decisions.
 - `.docs/db-architecture.md` should document current entity names unless a deliberate code refactor is made first.
-- Keep `.docs/kafka-architecture.md` empty until the user decides to work on Kafka/messaging.
+- Keep `.docs/kafka-architecture.md` empty; Kafka is not part of the project architecture.
 - Use `data.sql` for seed data with `INSERT` statements only.
 - Do not add DDL, constraints, indexes, `CREATE TABLE`, `DROP TABLE`, or schema management to `data.sql` unless explicitly requested.
 - When adding seed rows with references, verify referenced UUIDs exist in the corresponding seed files.
@@ -155,7 +151,7 @@ Before refactoring structure, verify the existing package organization and prese
 
 ## Do Not
 
-- Do not implement Kafka yet.
+- Do not implement Kafka or recreate `feed-ms`.
 - Do not implement Testcontainers yet.
 - Do not add service discovery/Eureka yet.
 - Do not expand API Gateway, JWT, or security behavior unless explicitly requested.
@@ -171,4 +167,4 @@ Before refactoring structure, verify the existing package organization and prese
 - If the user is wrong, explain why with evidence. If you were wrong, acknowledge it with proof.
 - Keep recommendations aligned with the current phase of the project, not the full future architecture.
 - When adding or changing code, respect current package organization unless the user explicitly requests a refactor.
-- Treat planned services and deferred infrastructure as roadmap context, not as permission to implement them.
+- Treat planned services and deferred infrastructure as roadmap context, not as permission to implement them. Kafka and `feed-ms` are not roadmap items.

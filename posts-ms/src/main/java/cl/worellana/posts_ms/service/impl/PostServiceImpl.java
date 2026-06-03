@@ -3,11 +3,13 @@ package cl.worellana.posts_ms.service.impl;
 import cl.worellana.posts_ms.exception.PostNotFoundException;
 import cl.worellana.posts_ms.model.Post;
 import cl.worellana.posts_ms.model.dto.request.PostRequest;
+import cl.worellana.posts_ms.model.dto.response.PostAuthorResponse;
 import cl.worellana.posts_ms.model.dto.response.PostPageResponse;
 import cl.worellana.posts_ms.model.dto.response.PostResponse;
 import cl.worellana.posts_ms.repository.CommentRepository;
 import cl.worellana.posts_ms.repository.PostRepository;
 import cl.worellana.posts_ms.repository.ReactionRepository;
+import cl.worellana.posts_ms.service.PostAuthorService;
 import cl.worellana.posts_ms.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -25,13 +28,16 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final ReactionRepository reactionRepository;
     private final CommentRepository commentRepository;
+    private final PostAuthorService postAuthorService;
 
     public PostServiceImpl(PostRepository postRepository,
                            ReactionRepository reactionRepository,
-                           CommentRepository commentRepository) {
+                           CommentRepository commentRepository,
+                           PostAuthorService postAuthorService) {
         this.postRepository = postRepository;
         this.reactionRepository = reactionRepository;
         this.commentRepository = commentRepository;
+        this.postAuthorService = postAuthorService;
     }
 
     @Override
@@ -47,14 +53,15 @@ public class PostServiceImpl implements PostService {
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        return PostResponse.from(postRepository.save(post), 0, 0);
+        Post savedPost = postRepository.save(post);
+        return PostResponse.from(savedPost, 0, 0, postAuthorService.findAuthorById(savedPost.getUserId()));
     }
 
     @Override
     @Transactional(readOnly = true)
     public PostResponse findById(UUID id) {
         return postRepository.findById(id)
-                .map(this::toResponse)
+                .map(post -> toResponse(post, postAuthorService.findAuthorsByIds(List.of(post.getUserId()))))
                 .orElseThrow(PostNotFoundException::new);
     }
 
@@ -72,22 +79,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<PostResponse> findAll() {
-        return postRepository.findAllByOrderByCreatedAtDesc().stream()
-                .map(this::toResponse)
-                .toList();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<PostResponse> findAllByUserId(UUID userId) {
-        return postRepository.findAllByUserIdOrderByCreatedAtDesc(userId).stream()
-                .map(this::toResponse)
-                .toList();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public PostPageResponse findAll(Integer page, Integer size) {
         Page<Post> posts = postRepository.findAll(createPageRequest(page, size));
         return toPageResponse(posts);
@@ -100,12 +91,13 @@ public class PostServiceImpl implements PostService {
         return toPageResponse(posts);
     }
 
-    private PostResponse toResponse(Post post) {
+    private PostResponse toResponse(Post post, Map<UUID, PostAuthorResponse> authorsById) {
         UUID postId = post.getId();
         return PostResponse.from(
                 post,
                 reactionRepository.countByPostId(postId),
-                commentRepository.countByPostId(postId)
+                commentRepository.countByPostId(postId),
+                authorsById.get(post.getUserId())
         );
     }
 
@@ -116,14 +108,16 @@ public class PostServiceImpl implements PostService {
     }
 
     private PostPageResponse toPageResponse(Page<Post> posts) {
-        return PostPageResponse.builder()
-                .items(posts.getContent().stream()
-                        .map(this::toResponse)
-                        .toList())
-                .page(posts.getNumber() + 1)
-                .size(posts.getSize())
-                .totalElements(posts.getTotalElements())
-                .totalPages(posts.getTotalPages())
-                .build();
+        Map<UUID, PostAuthorResponse> authorsById = postAuthorService.findAuthorsByIds(
+                posts.getContent().stream()
+                        .map(Post::getUserId)
+                        .toList()
+        );
+
+        List<PostResponse> items = posts.getContent().stream()
+                .map(post -> toResponse(post, authorsById))
+                .toList();
+
+        return PostPageResponse.from(posts, items);
     }
 }

@@ -28,13 +28,7 @@
           </div>
         </section>
       } @else {
-        @if (authorsErrorMessage()) {
-          <section class="border-b border-yellow-400/20 bg-yellow-400/10 px-6 py-3 text-sm font-black text-yellow-400">
-            {{ authorsErrorMessage() }}
-          </section>
-        }
-
-        <app-post-list [posts]="posts()" [authors]="authors()" />
+        <app-post-list [posts]="posts()" />
 
         <app-feed-pagination
           [currentPage]="currentPage()"

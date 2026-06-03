@@ -2,6 +2,7 @@ package cl.worellana.users_ms.controller;
 
 import cl.worellana.users_ms.model.dto.AppUserProfileRequest;
 import cl.worellana.users_ms.model.dto.AppUserResponse;
+import cl.worellana.users_ms.model.dto.UserSummaryResponse;
 import cl.worellana.users_ms.service.AppUserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,11 @@ public class AppUserController {
             return ResponseEntity.ok(List.of(appUserService.findByUsername(username)));
         }
         return ResponseEntity.ok(appUserService.findAll());
+    }
+
+    @GetMapping("/summaries")
+    public ResponseEntity<List<UserSummaryResponse>> findSummaries(@RequestParam List<UUID> ids) {
+        return ResponseEntity.ok(appUserService.findSummariesById(ids));
     }
 
     @GetMapping("/{id}")

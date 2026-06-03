@@ -1,0 +1,18 @@
+<article class="comment-row flex gap-4 px-6 py-5">
+  <div class="grid size-11 shrink-0 place-items-center rounded-2xl bg-zinc-800 text-sm font-black text-yellow-400">
+    {{ authorInitials() }}
+  </div>
+
+  <div class="min-w-0 flex-1">
+    <header class="flex flex-wrap items-center gap-2">
+      <h3 class="font-black text-zinc-100">{{ authorName() }}</h3>
+      <span class="text-sm font-bold text-zinc-500">&#64;{{ authorUsername() }}</span>
+      <span class="text-sm text-zinc-600">·</span>
+      <time class="text-sm font-bold text-zinc-500">{{ formattedDate() }}</time>
+    </header>
+
+    <p class="mt-2 text-[15px] leading-7 text-zinc-300">
+      {{ comment().content }}
+    </p>
+  </div>
+</article>

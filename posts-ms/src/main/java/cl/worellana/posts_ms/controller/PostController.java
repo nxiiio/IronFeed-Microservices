@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -34,15 +33,7 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(postService.create(request));
     }
 
-    @GetMapping
-    public ResponseEntity<List<PostResponse>> findAll(@RequestParam(required = false) UUID userId) {
-        if (userId == null) {
-            return ResponseEntity.ok(postService.findAll());
-        }
-        return ResponseEntity.ok(postService.findAllByUserId(userId));
-    }
-
-    @GetMapping("/page")
+    @GetMapping()
     public ResponseEntity<PostPageResponse> findAllPaged(@RequestParam(required = false) UUID userId,
                                                          @RequestParam(defaultValue = "1") int page,
                                                          @RequestParam(defaultValue = "20") int size) {

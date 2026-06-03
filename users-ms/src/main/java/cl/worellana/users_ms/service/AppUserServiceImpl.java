@@ -3,6 +3,7 @@ package cl.worellana.users_ms.service;
 import cl.worellana.users_ms.model.AppUser;
 import cl.worellana.users_ms.model.dto.AppUserProfileRequest;
 import cl.worellana.users_ms.model.dto.AppUserResponse;
+import cl.worellana.users_ms.model.dto.UserSummaryResponse;
 import cl.worellana.users_ms.repository.AppUserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,14 @@ public class AppUserServiceImpl implements AppUserService {
     public List<AppUserResponse> findAllById(List<UUID> ids) {
         return appUserRepository.findAllById(ids.stream().distinct().toList()).stream()
                 .map(AppUserResponse::from)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserSummaryResponse> findSummariesById(List<UUID> ids) {
+        return appUserRepository.findAllById(ids.stream().distinct().toList()).stream()
+                .map(UserSummaryResponse::from)
                 .toList();
     }
 

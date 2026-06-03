@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
-import { AppUser, Post } from '../../../../shared/models';
+import { Post } from '../../../../shared/models';
 import { ProfileHoverCard } from '../profile-hover-card/profile-hover-card';
 
 @Component({
   selector: 'app-post-card',
-  imports: [ProfileHoverCard],
+  imports: [ProfileHoverCard, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'block border-b border-zinc-800/70 px-6 py-5 transition-colors hover:bg-zinc-900/35'
@@ -15,11 +16,10 @@ import { ProfileHoverCard } from '../profile-hover-card/profile-hover-card';
 })
 export class PostCard {
   post = input.required<Post>();
-  author = input<AppUser | null>(null);
   profileTooltipId = computed(() => `post-author-tooltip-${this.post().id}`);
 
   authorName = computed(() => {
-    const author = this.author();
+    const author = this.post().author;
 
     if (!author) {
       return 'Atleta desconocido';
@@ -29,7 +29,7 @@ export class PostCard {
     return fullName || `@${author.username}`;
   });
 
-  authorUsername = computed(() => this.author()?.username ?? 'sin-usuario');
+  authorUsername = computed(() => this.post().author?.username ?? 'sin-usuario');
 
   authorInitials = computed(() =>
     this.authorName()

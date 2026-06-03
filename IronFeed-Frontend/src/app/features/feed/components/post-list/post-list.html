@@ -1,5 +1,5 @@
 @for (post of posts(); track post.id) {
-  <app-post-card [post]="post" [author]="findAuthor(post.authorId)" />
+  <app-post-card [post]="post" />
 } @empty {
   <section class="border-b border-zinc-800 px-6 py-10 text-zinc-500">
     Todavía no hay posts para mostrar.

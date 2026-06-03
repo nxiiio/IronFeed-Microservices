@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import { AppUser, Post } from '../../../../shared/models';
+import { Post } from '../../../../shared/models';
 import { PostCard } from '../post-card/post-card';
 
 @Component({
@@ -12,9 +12,4 @@ import { PostCard } from '../post-card/post-card';
 })
 export class PostList {
   posts = input.required<Post[]>();
-  authors = input<AppUser[]>([]);
-
-  findAuthor(authorId: string): AppUser | null {
-    return this.authors().find((author) => author.id === authorId) ?? null;
-  }
 }
