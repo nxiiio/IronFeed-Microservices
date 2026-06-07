@@ -1,0 +1,44 @@
+<div class="flex h-full flex-col">
+  <div>
+    <p class="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-600">
+      Fitness social
+    </p>
+    <h1 class="mt-2 text-3xl font-black tracking-[-0.08em] text-yellow-400">IronFeed</h1>
+  </div>
+
+  <nav class="mt-12 space-y-3 text-base font-black" aria-label="Navegación principal">
+    <a
+      class="flex items-center justify-between rounded-2xl border border-yellow-400/20 bg-yellow-400 px-4 py-3 text-zinc-950 shadow-lg shadow-yellow-400/10 transition hover:-translate-y-0.5"
+      routerLink="/"
+      aria-current="page"
+    >
+      <span>Feed</span>
+      <span class="text-xs">●</span>
+    </a>
+
+    <span class="block rounded-full px-4 py-3 text-zinc-600">Perfil</span>
+  </nav>
+
+  <section class="sidebar-session mt-auto" aria-label="Sesión actual">
+    <div class="sidebar-user-card">
+      <img
+        class="sidebar-avatar"
+        src="/assets/profile.svg"
+        [alt]="'Foto de perfil de ' + currentUserName()"
+      />
+
+      <div class="min-w-0">
+        <p class="truncate text-sm font-black text-zinc-100">
+          {{ currentUserName() }}
+        </p>
+        <p class="truncate text-xs font-bold text-zinc-500">
+          {{ currentUserIdentifier() }}
+        </p>
+      </div>
+    </div>
+
+    <button class="sidebar-logout-button" type="button" (click)="logout()">
+      Cerrar sesión
+    </button>
+  </section>
+</div>

@@ -1,10 +1,14 @@
 package cl.worellana.users_ms.controller;
 
 import cl.worellana.users_ms.exception.EmailAlreadyExistsException;
+import cl.worellana.users_ms.exception.InvalidCredentialsException;
+import cl.worellana.users_ms.exception.InvalidTokenException;
 import cl.worellana.users_ms.exception.UsernameAlreadyExistsException;
 import cl.worellana.users_ms.model.dto.ExceptionResponse;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +23,8 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleNotFound(EntityNotFoundException ex, HttpServletRequest req) {
@@ -41,6 +47,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<ExceptionResponse> handleEmailExists(EmailAlreadyExistsException ex, HttpServletRequest req) {
         return build(HttpStatus.CONFLICT, "EMAIL_ALREADY_EXISTS", "El recurso ya existe", req, Map.of("email", ex.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidCredentials(InvalidCredentialsException ex, HttpServletRequest req) {
+        return build(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS", ex.getMessage(), req, null);
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidToken(InvalidTokenException ex, HttpServletRequest req) {
+        return build(HttpStatus.UNAUTHORIZED, "INVALID_TOKEN", ex.getMessage(), req, null);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -66,6 +82,28 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponse> handleGeneric(Exception ex, HttpServletRequest req) {
+        InvalidCredentialsException invalidCredentialsException = findCause(ex, InvalidCredentialsException.class);
+        if (invalidCredentialsException != null) {
+            return handleInvalidCredentials(invalidCredentialsException, req);
+        }
+
+        InvalidTokenException invalidTokenException = findCause(ex, InvalidTokenException.class);
+        if (invalidTokenException != null) {
+            return handleInvalidToken(invalidTokenException, req);
+        }
+
+        UsernameAlreadyExistsException usernameAlreadyExistsException =
+                findCause(ex, UsernameAlreadyExistsException.class);
+        if (usernameAlreadyExistsException != null) {
+            return handleUsernameExists(usernameAlreadyExistsException, req);
+        }
+
+        EmailAlreadyExistsException emailAlreadyExistsException = findCause(ex, EmailAlreadyExistsException.class);
+        if (emailAlreadyExistsException != null) {
+            return handleEmailExists(emailAlreadyExistsException, req);
+        }
+
+        logger.error("unhandled_exception path={}", req.getRequestURI(), ex);
         return build(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_ERROR", "Error interno del servidor", req, null);
     }
 
@@ -79,5 +117,16 @@ public class GlobalExceptionHandler {
                 .fieldErrors(fieldErrors)
                 .build();
         return ResponseEntity.status(status).body(body);
+    }
+
+    private <T extends Throwable> T findCause(Throwable throwable, Class<T> expectedType) {
+        Throwable current = throwable;
+        while (current != null) {
+            if (expectedType.isInstance(current)) {
+                return expectedType.cast(current);
+            }
+            current = current.getCause();
+        }
+        return null;
     }
 }

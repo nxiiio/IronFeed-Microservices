@@ -12,6 +12,11 @@ spring:
       server:
         webmvc:
           routes:
+            - id: users-ms-auth
+              uri: http://localhost:8081
+              predicates:
+                - Path=/api/auth/**
+
             - id: users-ms
               uri: http://localhost:8081
               predicates:
@@ -52,3 +57,8 @@ management:
     web:
       exposure:
         include: health,info
+
+security:
+  jwt:
+    issuer: users-ms
+    secret: ${JWT_SECRET}

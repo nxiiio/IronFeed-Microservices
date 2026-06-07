@@ -1,0 +1,15 @@
+<main class="auth-page min-h-screen overflow-x-hidden bg-zinc-950 px-4 py-6 text-zinc-100 sm:px-6 lg:px-10">
+  <section class="auth-shell relative mx-auto grid min-h-[calc(100vh-3rem)] max-w-7xl overflow-hidden rounded-[2.5rem] border border-yellow-400/40 bg-zinc-950 shadow-2xl shadow-black/60 lg:grid-cols-[0.92fr_1.08fr]">
+    <div class="auth-orbit auth-orbit-one"></div>
+    <div class="auth-orbit auth-orbit-two"></div>
+    <div class="auth-grid"></div>
+
+    <section class="auth-card relative z-10 flex min-h-[38rem] flex-col rounded-[2.1rem] border border-white/10 bg-zinc-950/78 px-7 py-8 shadow-2xl shadow-black/50 backdrop-blur-2xl sm:px-10 lg:m-5 lg:px-12">
+      <ng-content select="[auth-card-header]" />
+      <ng-content select="[auth-card-form]" />
+      <ng-content select="[auth-card-footer]" />
+    </section>
+
+    <ng-content select="[auth-hero]" />
+  </section>
+</main>

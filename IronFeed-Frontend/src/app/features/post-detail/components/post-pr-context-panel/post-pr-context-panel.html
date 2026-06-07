@@ -1,0 +1,71 @@
+<aside class="post-context-panel">
+  <div class="flex items-start justify-between gap-4">
+    <p class="panel-kicker">Récord</p>
+    <span class="pr-badge">PR</span>
+  </div>
+
+  <div class="mt-7 flex items-center gap-5">
+    <span class="hero-icon" aria-hidden="true">
+      <img class="asset-icon icon-emerald" src="/assets/trophy.svg" alt="" />
+    </span>
+    <h2 class="panel-title">{{ recordTitle() }}</h2>
+  </div>
+
+  <p class="record-value">{{ recordValue() }}</p>
+
+  <div class="panel-divider"></div>
+
+  <div class="context-list">
+    <div class="context-row">
+      <span class="row-icon" aria-hidden="true">
+        <img class="asset-icon icon-emerald" src="/assets/dumbbellsvg.svg" alt="" />
+      </span>
+      <div>
+        <p class="panel-label">Ejercicio</p>
+        <p class="row-value">{{ personalRecord().exercise.name }}</p>
+      </div>
+    </div>
+
+    @if (personalRecord().exercise.muscleGroup) {
+      <div class="context-row">
+        <span class="row-icon" aria-hidden="true">
+          <img class="asset-icon icon-emerald" src="/assets/arm.svg" alt="" />
+        </span>
+        <div>
+          <p class="panel-label">Grupo muscular</p>
+          <p class="row-value">{{ personalRecord().exercise.muscleGroup }}</p>
+        </div>
+      </div>
+    }
+
+    <div class="context-row">
+      <span class="row-icon" aria-hidden="true">
+        <img class="asset-icon icon-emerald" src="/assets/calendar.svg" alt="" />
+      </span>
+      <div>
+        <p class="panel-label">Logrado el</p>
+        <p class="row-value">
+          {{ (personalRecord().achievedAt || fallbackDate()) | date: 'dd MMM yyyy · HH:mm' }}
+        </p>
+      </div>
+    </div>
+
+    <div class="context-row context-row-last">
+      <span class="row-icon" aria-hidden="true">
+        <img class="asset-icon icon-emerald" src="/assets/clock.svg" alt="" />
+      </span>
+      <div>
+        <p class="panel-label">Sesión</p>
+        <p class="row-value">
+          {{ personalRecord().session.startedAt | date: 'HH:mm' }}
+          <span class="text-yellow-400">→</span>
+          @if (personalRecord().session.finishedAt) {
+            {{ personalRecord().session.finishedAt | date: 'HH:mm' }}
+          } @else {
+            Sin cierre
+          }
+        </p>
+      </div>
+    </div>
+  </div>
+</aside>

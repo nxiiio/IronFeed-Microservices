@@ -23,3 +23,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+security:
+  jwt:
+    issuer: users-ms
+    secret: ${JWT_SECRET}
+    expiration-minutes: 60

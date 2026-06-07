@@ -1,0 +1,79 @@
+<app-auth-shell>
+  <app-auth-brand-header auth-card-header />
+
+  <form
+    auth-card-form
+    class="auth-login-form"
+    [formGroup]="loginForm"
+    (ngSubmit)="onSubmit()"
+    aria-label="Formulario de inicio de sesión"
+  >
+    <div class="mb-8">
+      <p class="mb-3 text-xs font-black uppercase tracking-[0.32em] text-yellow-400">
+        Bienvenido/a devuelta
+      </p>
+      <h1 class="max-w-sm text-4xl font-black leading-[0.9] tracking-[-0.08em] text-white sm:text-6xl">
+        Iniciar sesión
+      </h1>
+      <p class="mt-5 max-w-sm text-sm font-medium leading-6 text-zinc-400">
+        Entra a tu feed, revisa tus progresos y mantente conectado con la comunidad fitness.
+      </p>
+    </div>
+
+    <app-auth-field label="Email" [errorMessage]="emailErrorMessage" errorId="login-email-error">
+      <input
+        id="login-email"
+        type="email"
+        formControlName="email"
+        autocomplete="email"
+        placeholder="you@ironfeed.app"
+        [attr.aria-invalid]="emailErrorMessage ? 'true' : null"
+      />
+    </app-auth-field>
+
+    <app-auth-field class="mt-4 block" label="Contraseña" [errorMessage]="passwordErrorMessage" errorId="login-password-error">
+      <input
+        id="login-password"
+        type="password"
+        formControlName="password"
+        autocomplete="current-password"
+        placeholder="••••••••"
+        [attr.aria-invalid]="passwordErrorMessage ? 'true' : null"
+      />
+    </app-auth-field>
+
+    <div class="auth-login-actions mt-4 flex items-center justify-between gap-4 text-xs font-bold text-zinc-500">
+      <label class="inline-flex items-center gap-2">
+        <input class="auth-login-checkbox" type="checkbox" formControlName="rememberSession" />
+        Mantener sesión iniciada
+      </label>
+
+      <a class="transition hover:text-yellow-400" href="#" aria-label="Recuperar contraseña">
+        ¿Olvidaste tu contraseña?
+      </a>
+    </div>
+
+    @if (errorMessage()) {
+      <p class="auth-login-submit-error" role="alert">
+        {{ errorMessage() }}
+      </p>
+    }
+
+    <button class="auth-login-button mt-7 w-full" type="submit" [disabled]="loginForm.invalid || isLoading()">
+      {{ isLoading() ? 'Iniciando sesión...' : 'Iniciar sesión' }}
+    </button>
+
+    <p class="mt-5 text-center text-xs font-bold text-zinc-500">
+      ¿No tienes una cuenta?
+      <a
+        class="text-yellow-400 transition hover:text-yellow-300"
+        routerLink="/register"
+        aria-label="Ir a registro"
+      >
+        Regístrate
+      </a>
+    </p>
+  </form>
+
+  <app-auth-hero-panel auth-hero [ariaLabel]="'Espacio para imagen principal del login'" />
+</app-auth-shell>

@@ -1,0 +1,135 @@
+:host {
+  display: block;
+}
+
+.featured-panel {
+  position: relative;
+  overflow: hidden;
+  animation:
+    panel-enter 360ms ease-out both,
+    panel-float 3.4s ease-in-out 420ms infinite;
+  box-shadow: 0 24px 70px rgb(0 0 0 / 28%);
+}
+
+.featured-panel::before {
+  position: absolute;
+  inset: -40%;
+  pointer-events: none;
+  content: '';
+  background:
+    radial-gradient(circle at 35% 20%, rgb(250 204 21 / 18%), transparent 26%),
+    radial-gradient(circle at 80% 70%, rgb(250 204 21 / 10%), transparent 30%);
+  filter: blur(10px);
+  animation: glow-float 4.2s ease-in-out infinite;
+}
+
+.featured-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.exercise-card {
+  animation: card-enter 420ms ease-out both;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.exercise-card:hover {
+  transform: translateY(-3px);
+  border-color: rgb(250 204 21 / 45%);
+  background-color: rgb(24 24 27);
+  box-shadow: 0 16px 36px rgb(250 204 21 / 8%);
+}
+
+.pulse-dot {
+  animation: dot-pulse 1.4s ease-in-out infinite;
+}
+
+.empty-state {
+  animation: card-enter 420ms ease-out both;
+}
+
+@keyframes panel-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes panel-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(-0.35deg);
+  }
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes glow-float {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: translate(10px, -14px) rotate(8deg);
+    opacity: 1;
+  }
+}
+
+@keyframes dot-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .featured-panel,
+  .exercise-card,
+  .empty-state,
+  .pulse-dot {
+    animation: none;
+  }
+
+  .exercise-card {
+    transition: none;
+  }
+
+  .exercise-card:hover {
+    transform: none;
+  }
+
+  .featured-panel::before {
+    animation: none;
+  }
+}
