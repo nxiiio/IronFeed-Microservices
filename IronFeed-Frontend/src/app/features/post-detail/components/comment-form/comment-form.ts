@@ -7,7 +7,7 @@ import { ChangeDetectionStrategy, Component, computed, input, output, signal } f
   styleUrl: './comment-form.css'
 })
 export class CommentForm {
-  readonly maxLength = 4000;
+  readonly maxLength = 500;
 
   isSubmitting = input(false);
   errorMessage = input<string | null>(null);
@@ -36,5 +36,9 @@ export class CommentForm {
     }
 
     this.commentSubmitted.emit(this.trimmedContent());
+  }
+
+  clearContent(): void {
+    this.content.set('');
   }
 }

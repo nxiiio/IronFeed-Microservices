@@ -3,7 +3,5 @@
 }
 
 .post-detail-card {
-  box-shadow:
-    0 0 0 1px rgb(250 204 21 / 0.04),
-    32px 0 90px rgb(250 204 21 / 0.08);
+  box-shadow: inset 0 0 0 1px rgb(250 204 21 / 0.04);
 }

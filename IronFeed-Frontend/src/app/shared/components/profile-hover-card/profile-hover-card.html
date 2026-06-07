@@ -1,15 +1,17 @@
 <section
   [id]="tooltipId()"
-  class="profile-hover-card overflow-hidden rounded-3xl border border-yellow-400/25 bg-zinc-950/95 p-4 shadow-2xl shadow-yellow-400/10 backdrop-blur-xl"
-  role="tooltip"
+  class="profile-hover-card"
+  [class.profile-hover-card--above]="placement() === 'above'"
 >
   <div class="absolute -right-10 -top-10 size-28 rounded-full bg-yellow-400/20 blur-2xl" aria-hidden="true"></div>
   <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-yellow-400/70 to-transparent" aria-hidden="true"></div>
 
   <div class="relative flex items-center gap-3">
-    <div class="grid size-14 shrink-0 place-items-center rounded-2xl bg-yellow-400 text-base font-black tracking-[-0.05em] text-zinc-950 shadow-lg shadow-yellow-400/25">
-      {{ initials() }}
-    </div>
+    <img
+      class="size-14 shrink-0 rounded-2xl border border-yellow-400/25 bg-yellow-400 object-contain p-3 shadow-lg shadow-yellow-400/25"
+      src="/assets/profile.svg"
+      [alt]="'Foto de perfil de ' + fullName()"
+    />
 
     <div class="min-w-0">
       <p class="truncate text-base font-black tracking-[-0.04em] text-zinc-50">
@@ -27,3 +29,4 @@
     </p>
   </div>
 </section>
+

@@ -28,7 +28,6 @@
         autocomplete="email"
         placeholder="you@ironfeed.app"
         [attr.aria-invalid]="emailErrorMessage ? 'true' : null"
-        [attr.aria-describedby]="emailErrorMessage ? 'login-email-error' : null"
       />
     </app-auth-field>
 
@@ -40,7 +39,6 @@
         autocomplete="current-password"
         placeholder="••••••••"
         [attr.aria-invalid]="passwordErrorMessage ? 'true' : null"
-        [attr.aria-describedby]="passwordErrorMessage ? 'login-password-error' : null"
       />
     </app-auth-field>
 

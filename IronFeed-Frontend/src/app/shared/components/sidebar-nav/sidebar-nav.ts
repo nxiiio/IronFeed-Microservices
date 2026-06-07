@@ -29,15 +29,6 @@ export class SidebarNav {
 
     return user?.username ? `@${user.username}` : user?.email ?? 'Sesión activa';
   });
-  readonly currentUserInitials = computed(() =>
-    this.currentUserName()
-      .split(' ')
-      .map((namePart) => namePart[0])
-      .join('')
-      .slice(0, 2)
-      .toUpperCase()
-  );
-
   async logout(): Promise<void> {
     this.authService.logout();
     await this.router.navigateByUrl('/login');

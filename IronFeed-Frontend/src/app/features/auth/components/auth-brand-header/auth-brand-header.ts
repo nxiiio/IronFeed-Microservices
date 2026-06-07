@@ -13,7 +13,6 @@ import { RouterLink } from '@angular/router';
 })
 export class AuthBrandHeader {
   homeLink = input('/');
-  brandInitials = input('IF');
   brandName = input('IronFeed');
   tagline = input('Fitness social');
   ariaLabel = input('Volver al feed de IronFeed');

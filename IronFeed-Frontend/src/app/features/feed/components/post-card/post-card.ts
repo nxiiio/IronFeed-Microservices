@@ -1,23 +1,28 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { Router } from '@angular/router';
 
+import { ProfileHoverCard } from '../../../../shared/components/profile-hover-card/profile-hover-card';
 import { Post } from '../../../../shared/models';
-import { ProfileHoverCard } from '../profile-hover-card/profile-hover-card';
 
 @Component({
   selector: 'app-post-card',
-  imports: [ProfileHoverCard, RouterLink],
+  imports: [ProfileHoverCard],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'block border-b border-zinc-800/70 px-6 py-5 transition-colors hover:bg-zinc-900/35'
+    class: 'block cursor-pointer border-b border-zinc-800/70 px-6 py-5 outline-none transition-colors hover:bg-zinc-900/35 focus-visible:bg-zinc-900/35 focus-visible:ring-4 focus-visible:ring-yellow-400/20',
+    role: 'link',
+    tabindex: '0',
+    '(click)': 'openPostDetail()',
+    '(keydown.enter)': 'openPostDetail()',
+    '(keydown.space)': 'openPostDetail($event)'
   },
   templateUrl: './post-card.html',
   styleUrl: './post-card.css'
 })
 export class PostCard {
-  post = input.required<Post>();
-  profileTooltipId = computed(() => `post-author-tooltip-${this.post().id}`);
+  private readonly router = inject(Router);
 
+  post = input.required<Post>();
   authorName = computed(() => {
     const author = this.post().author;
 
@@ -31,15 +36,6 @@ export class PostCard {
 
   authorUsername = computed(() => this.post().author?.username ?? 'sin-usuario');
 
-  authorInitials = computed(() =>
-    this.authorName()
-      .split(' ')
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((part) => part[0]?.toUpperCase())
-      .join('')
-  );
-
   postTypeLabel = computed(() => {
     const labels = {
       WORKOUT: 'Workout',
@@ -48,6 +44,16 @@ export class PostCard {
     };
 
     return labels[this.post().type];
+  });
+
+  postTypeBadgeClass = computed(() => {
+    const classes = {
+      WORKOUT: 'border-yellow-400/30 bg-yellow-400/10 text-yellow-400 shadow-yellow-400/10',
+      PERSONAL_RECORD: 'border-emerald-400/30 bg-emerald-400/10 text-emerald-300 shadow-emerald-400/10',
+      PROGRESS_PHOTO: 'border-cyan-400/30 bg-cyan-400/10 text-cyan-300 shadow-cyan-400/10'
+    };
+
+    return classes[this.post().type];
   });
 
   formattedDate = computed(() => {
@@ -62,4 +68,9 @@ export class PostCard {
       timeStyle: 'short'
     }).format(date);
   });
+
+  openPostDetail(event?: Event): void {
+    event?.preventDefault();
+    this.router.navigate(['/posts', this.post().id]);
+  }
 }

@@ -25,8 +25,6 @@ export class CommentCard {
 
   readonly authorUsername = computed(() => this.author()?.username ?? 'sin-usuario');
 
-  readonly authorInitials = computed(() => this.getInitials(this.authorName()));
-
   readonly formattedDate = computed(() => this.formatDate(this.comment().createdAt));
 
   private formatDate(value: string): string {
@@ -42,12 +40,4 @@ export class CommentCard {
     }).format(date);
   }
 
-  private getInitials(value: string): string {
-    return value
-      .split(' ')
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((part) => part[0]?.toUpperCase())
-      .join('');
-  }
 }

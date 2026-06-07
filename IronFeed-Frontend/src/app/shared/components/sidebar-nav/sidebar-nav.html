@@ -21,9 +21,11 @@
 
   <section class="sidebar-session mt-auto" aria-label="Sesión actual">
     <div class="sidebar-user-card">
-      <div class="sidebar-avatar" aria-hidden="true">
-        {{ currentUserInitials() }}
-      </div>
+      <img
+        class="sidebar-avatar"
+        src="/assets/profile.svg"
+        [alt]="'Foto de perfil de ' + currentUserName()"
+      />
 
       <div class="min-w-0">
         <p class="truncate text-sm font-black text-zinc-100">

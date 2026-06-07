@@ -24,8 +24,6 @@ export class PostDetailCard {
 
   readonly authorUsername = computed(() => this.post().author?.username ?? 'sin-usuario');
 
-  readonly authorInitials = computed(() => this.getInitials(this.authorName()));
-
   readonly formattedDate = computed(() => this.formatDate(this.post().createdAt));
 
   private formatDate(value: string): string {
@@ -41,12 +39,4 @@ export class PostDetailCard {
     }).format(date);
   }
 
-  private getInitials(value: string): string {
-    return value
-      .split(' ')
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((part) => part[0]?.toUpperCase())
-      .join('');
-  }
 }

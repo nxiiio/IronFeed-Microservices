@@ -15,10 +15,12 @@
   place-items: center;
   border-radius: 1rem;
   background: rgb(250 204 21);
-  color: rgb(9 9 11);
-  font-size: 1.25rem;
-  font-weight: 1000;
   box-shadow: 0 10px 32px rgb(250 204 21 / 0.3);
+}
+
+.auth-brand-mark img {
+  width: 1.55rem;
+  height: 1.55rem;
 }
 
 .auth-brand-name {
