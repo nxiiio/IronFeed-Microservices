@@ -1,0 +1,55 @@
+<main class="min-h-screen bg-[linear-gradient(180deg,#09090b_0%,#09090b_62%,#050505_100%)] text-zinc-100">
+  <section class="mx-auto grid min-h-screen max-w-[88rem] grid-cols-[200px_minmax(0,1fr)_280px] border-x border-zinc-900/80">
+    <app-sidebar-nav />
+
+    <section class="border-r border-zinc-800/80 bg-zinc-950/55">
+      <app-feed-header />
+
+      <app-post-composer />
+
+      @if (isLoading()) {
+        <app-feed-loading-skeleton />
+      } @else if (errorMessage()) {
+        <section class="border-b border-zinc-800/80 px-6 py-8">
+          <div class="rounded-3xl border border-yellow-400/25 bg-yellow-400/10 p-5">
+            <p class="text-sm font-black text-yellow-400">{{ errorMessage() }}</p>
+            <p class="mt-2 text-sm leading-6 text-zinc-500">
+              Ocurrió un error al cargar las publicaciones. Por favor, intenta
+              nuevamente.
+            </p>
+
+            <button
+              class="mt-5 rounded-full bg-yellow-400 px-5 py-2 text-sm font-black text-zinc-950 transition hover:bg-yellow-300"
+              type="button"
+              (click)="loadFeed()"
+            >
+              Reintentar
+            </button>
+          </div>
+        </section>
+      } @else {
+        <app-post-list [posts]="posts()" />
+
+        <app-feed-pagination
+          [currentPage]="currentPage()"
+          [totalPages]="totalPages()"
+          [totalElements]="totalElements()"
+          [isLoading]="isLoading()"
+          (pageChange)="loadFeed($event)"
+        />
+      }
+    </section>
+
+    <aside class="px-6 py-12">
+      <div class="sticky top-12">
+        @if (exercisesErrorMessage()) {
+          <p class="mb-4 rounded-2xl border border-yellow-400/20 bg-yellow-400/10 px-4 py-3 text-sm font-bold text-yellow-400">
+            {{ exercisesErrorMessage() }}
+          </p>
+        }
+
+        <app-featured-exercises [exercises]="exercises()" />
+      </div>
+    </aside>
+  </section>
+</main>

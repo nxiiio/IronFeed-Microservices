@@ -26,8 +26,13 @@ public class PostResponse {
     private LocalDateTime createdAt;
     private long reactionCount;
     private long commentCount;
+    private PostAuthorResponse author;
 
     public static PostResponse from(Post post, long reactionCount, long commentCount) {
+        return from(post, reactionCount, commentCount, null);
+    }
+
+    public static PostResponse from(Post post, long reactionCount, long commentCount, PostAuthorResponse author) {
         return PostResponse.builder()
                 .id(post.getId())
                 .authorId(post.getUserId())
@@ -39,6 +44,7 @@ public class PostResponse {
                 .createdAt(post.getCreatedAt())
                 .reactionCount(reactionCount)
                 .commentCount(commentCount)
+                .author(author)
                 .build();
     }
 }

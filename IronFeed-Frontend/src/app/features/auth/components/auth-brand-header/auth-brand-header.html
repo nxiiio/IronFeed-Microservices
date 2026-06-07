@@ -1,0 +1,11 @@
+<a class="auth-brand" [routerLink]="homeLink()" [attr.aria-label]="ariaLabel()">
+  <span class="auth-brand-mark" aria-hidden="true">
+    <img src="assets/dumbbellsvg.svg" alt="" />
+  </span>
+  <span>
+    <span class="auth-brand-name">{{ brandName() }}</span>
+    <span class="auth-brand-tagline">
+      {{ tagline() }}
+    </span>
+  </span>
+</a>

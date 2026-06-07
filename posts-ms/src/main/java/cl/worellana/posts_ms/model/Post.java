@@ -1,4 +1,4 @@
-package cl.worellana.posts_ms.model;
+    package cl.worellana.posts_ms.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

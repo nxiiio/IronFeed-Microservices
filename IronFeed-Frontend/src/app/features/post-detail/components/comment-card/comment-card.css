@@ -1,0 +1,14 @@
+:host {
+  display: block;
+}
+
+.comment-row {
+  transition:
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+
+.comment-row:hover {
+  background: rgb(24 24 27 / 0.42);
+  transform: translateX(4px);
+}

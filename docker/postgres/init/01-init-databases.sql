@@ -17,3 +17,4 @@ GRANT ALL PRIVILEGES ON DATABASE social_db TO social_user;
 CREATE USER posts_user WITH PASSWORD 'posts_pass';
 CREATE DATABASE posts_db OWNER posts_user;
 GRANT ALL PRIVILEGES ON DATABASE posts_db TO posts_user;
+

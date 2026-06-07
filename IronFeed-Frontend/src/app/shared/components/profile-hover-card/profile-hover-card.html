@@ -1,0 +1,32 @@
+<section
+  [id]="tooltipId()"
+  class="profile-hover-card"
+  [class.profile-hover-card--above]="placement() === 'above'"
+>
+  <div class="absolute -right-10 -top-10 size-28 rounded-full bg-yellow-400/20 blur-2xl" aria-hidden="true"></div>
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-yellow-400/70 to-transparent" aria-hidden="true"></div>
+
+  <div class="relative flex items-center gap-3">
+    <img
+      class="size-14 shrink-0 rounded-2xl border border-yellow-400/25 bg-yellow-400 object-contain p-3 shadow-lg shadow-yellow-400/25"
+      src="/assets/profile.svg"
+      [alt]="'Foto de perfil de ' + fullName()"
+    />
+
+    <div class="min-w-0">
+      <p class="truncate text-base font-black tracking-[-0.04em] text-zinc-50">
+        {{ fullName() }}
+      </p>
+      <p class="mt-1 truncate text-sm font-bold text-yellow-400">
+        &#64;{{ username() }}
+      </p>
+    </div>
+  </div>
+
+  <div class="relative mt-4 rounded-2xl border border-zinc-800/90 bg-black/35 px-3 py-2">
+    <p class="text-[0.68rem] font-black uppercase tracking-[0.22em] text-zinc-500">
+      Perfil de atleta
+    </p>
+  </div>
+</section>
+

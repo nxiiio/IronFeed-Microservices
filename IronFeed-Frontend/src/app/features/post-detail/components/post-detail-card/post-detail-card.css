@@ -1,0 +1,7 @@
+:host {
+  display: block;
+}
+
+.post-detail-card {
+  box-shadow: inset 0 0 0 1px rgb(250 204 21 / 0.04);
+}

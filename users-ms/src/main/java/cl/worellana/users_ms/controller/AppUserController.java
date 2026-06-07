@@ -1,11 +1,10 @@
 package cl.worellana.users_ms.controller;
 
 import cl.worellana.users_ms.model.dto.AppUserProfileRequest;
-import cl.worellana.users_ms.model.dto.AppUserRequest;
 import cl.worellana.users_ms.model.dto.AppUserResponse;
+import cl.worellana.users_ms.model.dto.UserSummaryResponse;
 import cl.worellana.users_ms.service.AppUserService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,19 +21,22 @@ public class AppUserController {
         this.appUserService = appUserService;
     }
 
-    @PostMapping
-    public ResponseEntity<AppUserResponse> register(@Valid @RequestBody AppUserRequest request) {
-        AppUserResponse created = appUserService.register(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
-    }
-
     @GetMapping
     public ResponseEntity<List<AppUserResponse>> findAll(
+            @RequestParam(required = false) List<UUID> ids,
             @RequestParam(required = false) String username) {
+        if (ids != null) {
+            return ResponseEntity.ok(appUserService.findAllById(ids));
+        }
         if (username != null) {
             return ResponseEntity.ok(List.of(appUserService.findByUsername(username)));
         }
         return ResponseEntity.ok(appUserService.findAll());
+    }
+
+    @GetMapping("/summaries")
+    public ResponseEntity<List<UserSummaryResponse>> findSummaries(@RequestParam List<UUID> ids) {
+        return ResponseEntity.ok(appUserService.findSummariesById(ids));
     }
 
     @GetMapping("/{id}")

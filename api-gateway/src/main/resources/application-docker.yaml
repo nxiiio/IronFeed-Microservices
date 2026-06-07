@@ -1,0 +1,45 @@
+spring:
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            - id: users-ms-auth
+              uri: http://users-ms:8081
+              predicates:
+                - Path=/api/auth/**
+
+            - id: users-ms
+              uri: http://users-ms:8081
+              predicates:
+                - Path=/api/users/**
+
+            - id: workout-ms-routines
+              uri: http://workout-ms:8082
+              predicates:
+                - Path=/api/routines/**
+
+            - id: workout-ms-sessions
+              uri: http://workout-ms:8082
+              predicates:
+                - Path=/api/workout-sessions/**
+
+            - id: workout-ms-exercises
+              uri: http://workout-ms:8082
+              predicates:
+                - Path=/api/exercises/**
+
+            - id: workout-ms-personal-records
+              uri: http://workout-ms:8082
+              predicates:
+                - Path=/api/personal-records/**
+
+            - id: social-ms-follows
+              uri: http://social-ms:8083
+              predicates:
+                - Path=/api/follows/**
+
+            - id: posts-ms
+              uri: http://posts-ms:8084
+              predicates:
+                - Path=/api/posts/**

@@ -1,6 +1,7 @@
 package cl.worellana.posts_ms.controller;
 
 import cl.worellana.posts_ms.model.dto.request.PostRequest;
+import cl.worellana.posts_ms.model.dto.response.PostPageResponse;
 import cl.worellana.posts_ms.model.dto.response.PostResponse;
 import cl.worellana.posts_ms.service.PostService;
 import jakarta.validation.Valid;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -33,12 +33,14 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(postService.create(request));
     }
 
-    @GetMapping
-    public ResponseEntity<List<PostResponse>> findAll(@RequestParam(required = false) UUID userId) {
+    @GetMapping()
+    public ResponseEntity<PostPageResponse> findAllPaged(@RequestParam(required = false) UUID userId,
+                                                         @RequestParam(defaultValue = "1") int page,
+                                                         @RequestParam(defaultValue = "20") int size) {
         if (userId == null) {
-            return ResponseEntity.ok(postService.findAll());
+            return ResponseEntity.ok(postService.findAll(page, size));
         }
-        return ResponseEntity.ok(postService.findAllByUserId(userId));
+        return ResponseEntity.ok(postService.findAllByUserId(userId, page, size));
     }
 
     @GetMapping("/{postId}")

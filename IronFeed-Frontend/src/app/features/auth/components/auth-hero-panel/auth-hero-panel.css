@@ -1,0 +1,113 @@
+:host {
+  background:
+    radial-gradient(circle at 50% 48%, rgba(250, 204, 21, 0.28), transparent 18rem),
+    linear-gradient(135deg, rgba(24, 24, 27, 0.28), rgba(250, 204, 21, 0.08));
+}
+
+:host::after {
+  position: absolute;
+  right: -18%;
+  bottom: -28%;
+  width: 42rem;
+  height: 42rem;
+  content: '';
+  background: radial-gradient(circle, rgba(250, 204, 21, 0.5), rgba(250, 204, 21, 0.14) 38%, transparent 68%);
+  filter: blur(10px);
+  animation: auth-glow-breathe 3.2s ease-in-out infinite;
+}
+
+.hero-rings {
+  position: absolute;
+  inset: 12%;
+  border: 1px solid rgba(250, 204, 21, 0.14);
+  border-radius: 44% 56% 52% 48%;
+  transform: rotate(-12deg);
+  animation: auth-slow-spin 16s linear infinite;
+}
+
+.hero-rings::before,
+.hero-rings::after {
+  position: absolute;
+  content: '';
+  border: 1px solid rgba(250, 204, 21, 0.16);
+  border-radius: inherit;
+}
+
+.hero-rings::before {
+  inset: 8%;
+}
+
+.hero-rings::after {
+  inset: 18%;
+  border-style: dashed;
+}
+
+.hero-image-stage {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  width: min(50rem, 98%);
+  min-height: clamp(28rem, 72vh, 38rem);
+  aspect-ratio: 0.82;
+  place-items: center;
+  border: 1px solid rgba(250, 204, 21, 0.18);
+  border-radius: 42% 58% 48% 52% / 55% 42% 58% 45%;
+  background:
+    radial-gradient(circle at 50% 36%, rgba(250, 204, 21, 0.22), transparent 42%),
+    linear-gradient(135deg, rgba(250, 204, 21, 0.08), rgba(9, 9, 11, 0.2));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 32px 90px rgba(250, 204, 21, 0.12);
+}
+
+.hero-image-placeholder {
+  display: grid;
+  width: 92%;
+  height: 92%;
+  place-items: center;
+  border: 1px dashed rgba(250, 204, 21, 0.35);
+  border-radius: 2.7rem;
+  color: rgba(250, 204, 21, 0.68);
+  font-size: 0.78rem;
+  font-weight: 1000;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  background: rgba(9, 9, 11, 0.28);
+  backdrop-filter: blur(10px);
+}
+
+@keyframes auth-glow-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.92);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes auth-slow-spin {
+  to {
+    transform: rotate(348deg);
+  }
+}
+
+@media (max-height: 720px) and (min-width: 1024px) {
+  :host {
+    min-height: 34rem;
+  }
+
+  .hero-image-stage {
+    min-height: 28rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host::after,
+  .hero-rings {
+    animation: none;
+  }
+}

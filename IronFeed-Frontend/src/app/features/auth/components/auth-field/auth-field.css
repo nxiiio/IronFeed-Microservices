@@ -1,0 +1,71 @@
+.auth-field {
+  display: block;
+}
+
+.auth-field span {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: rgb(161, 161, 170);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.auth-field input,
+.auth-field textarea {
+  width: 100%;
+  border: 1px solid rgba(250, 204, 21, 0.14);
+  border-radius: 1.15rem;
+  outline: none;
+  color: white;
+  background:
+    linear-gradient(135deg, rgba(250, 204, 21, 0.08), rgba(255, 255, 255, 0.03)),
+    rgba(9, 9, 11, 0.78);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.auth-field input {
+  height: 3.35rem;
+  padding: 0 1rem;
+}
+
+.auth-field textarea {
+  min-height: 7rem;
+  resize: vertical;
+  padding: 1rem;
+}
+
+.auth-field input::placeholder,
+.auth-field textarea::placeholder {
+  color: rgb(82, 82, 91);
+}
+
+.auth-field input:focus,
+.auth-field textarea:focus {
+  border-color: rgba(250, 204, 21, 0.75);
+  box-shadow:
+    0 0 0 4px rgba(250, 204, 21, 0.12),
+    0 18px 40px rgba(250, 204, 21, 0.08);
+  transform: translateY(-1px);
+}
+
+.auth-field input[aria-invalid='true'],
+.auth-field textarea[aria-invalid='true'] {
+  border-color: rgba(248, 113, 113, 0.75);
+  box-shadow: 0 0 0 4px rgba(248, 113, 113, 0.1);
+}
+
+.auth-error-message {
+  margin-top: 0.45rem;
+  color: rgb(248, 113, 113);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+@media (max-width: 640px) {
+  .auth-field input {
+    height: 3rem;
+  }
+}

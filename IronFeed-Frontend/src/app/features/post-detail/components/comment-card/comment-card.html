@@ -1,0 +1,22 @@
+<article class="comment-row flex gap-4 px-6 py-5">
+  <div class="group/profile relative shrink-0">
+    <img
+      class="size-11 rounded-2xl border border-zinc-800 bg-yellow-400 object-contain p-2 outline-none transition duration-200 hover:-translate-y-0.5 hover:border-yellow-400/50 hover:shadow-lg hover:shadow-yellow-400/20 focus-visible:-translate-y-0.5 focus-visible:ring-4 focus-visible:ring-yellow-400/25"
+      src="/assets/profile.svg"
+      [alt]="'Foto de perfil de ' + authorName()"
+    />
+  </div>
+
+  <div class="min-w-0 flex-1">
+    <header class="flex flex-wrap items-center gap-2">
+      <h3 class="font-black text-zinc-100">{{ authorName() }}</h3>
+      <span class="text-sm font-bold text-zinc-500">&#64;{{ authorUsername() }}</span>
+      <span class="text-sm text-zinc-600">·</span>
+      <time class="text-sm font-bold text-zinc-500">{{ formattedDate() }}</time>
+    </header>
+
+    <p class="mt-2 text-[15px] leading-7 text-zinc-300">
+      {{ comment().content }}
+    </p>
+  </div>
+</article>
