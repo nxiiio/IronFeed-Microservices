@@ -13,13 +13,10 @@ services:
   nginx:
     image: nginx:1.29-alpine
     container_name: ironfeed-nginx
-    environment:
-      API_GATEWAY_UPSTREAM: ${API_GATEWAY_UPSTREAM}
-      NGINX_ENVSUBST_FILTER: ^API_GATEWAY_UPSTREAM$
     ports:
       - "80:80"
     volumes:
-      - ./deploy/public/nginx/default.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./deploy/public/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - frontend
     restart: unless-stopped

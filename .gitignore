@@ -72,3 +72,6 @@ desktop.ini
 # ──────────────────────────────────────────
 .docs/*
 .superpowers/*
+.skills/*
+.agents/*
+.atl/*
