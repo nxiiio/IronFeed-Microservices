@@ -7,7 +7,9 @@ import { AuthService } from '../services/auth.service';
 export const authInterceptor: HttpInterceptorFn = (request, next) => {
   const authService = inject(AuthService);
   const accessToken = authService.getAccessToken();
-  const isApiGatewayRequest = request.url.startsWith(environment.apiGatewayUrl);
+  const isApiGatewayRequest = environment.apiGatewayUrl
+    ? request.url.startsWith(environment.apiGatewayUrl)
+    : request.url.startsWith('/api/');
 
   if (!accessToken || !isApiGatewayRequest) {
     return next(request);
