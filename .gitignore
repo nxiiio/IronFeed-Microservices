@@ -72,3 +72,7 @@ desktop.ini
 # ──────────────────────────────────────────
 .docs/*
 .superpowers/*
+.skills/*
+.agents/*
+.atl/*
+IronFeed-key.pem
