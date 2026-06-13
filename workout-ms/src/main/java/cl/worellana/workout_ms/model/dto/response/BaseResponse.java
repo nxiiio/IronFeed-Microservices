@@ -1,0 +1,4 @@
+package cl.worellana.workout_ms.model.dto.response;
+
+public record BaseResponse(String name, String version) {
+}

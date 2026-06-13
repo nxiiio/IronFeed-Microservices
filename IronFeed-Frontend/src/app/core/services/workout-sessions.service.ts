@@ -15,4 +15,10 @@ export class WorkoutSessionsService {
   findById(id: string): Observable<WorkoutSession> {
     return this.http.get<WorkoutSession>(`${this.workoutSessionsUrl}/${id}`);
   }
+
+  findByUserId(userId: string): Observable<WorkoutSession[]> {
+    return this.http.get<WorkoutSession[]>(this.workoutSessionsUrl, {
+      params: { userId }
+    });
+  }
 }

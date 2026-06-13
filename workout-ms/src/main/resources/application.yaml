@@ -1,6 +1,10 @@
 server:
   port: 8082
 
+app:
+  name: workout-ms
+  version: 0.0.1-SNAPSHOT
+
 spring:
   output:
     ansi:
@@ -23,3 +27,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+  packages-to-scan: cl.worellana.workout_ms.controller

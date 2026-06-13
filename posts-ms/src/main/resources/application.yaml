@@ -1,6 +1,10 @@
 server:
   port: 8084
 
+app:
+  name: posts-ms
+  version: 0.0.1-SNAPSHOT
+
 spring:
   output:
     ansi:
@@ -27,3 +31,10 @@ spring:
 services:
   users:
     url: http://localhost:8081
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+  packages-to-scan: cl.worellana.posts_ms.controller

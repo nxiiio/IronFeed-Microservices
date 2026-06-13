@@ -7,29 +7,82 @@
     />
 
     <div class="flex-1">
-      <div class="rounded-2xl border border-yellow-400/20 bg-zinc-900/80 px-4 py-3 text-sm font-medium text-zinc-500 shadow-inner shadow-black/20">
-        ¿Qué entrenaste hoy?
-      </div>
-
-      <div class="mt-4 flex items-center justify-between gap-4">
-        <div class="flex gap-2 text-[11px] font-black uppercase tracking-[0.2em]">
-          <span class="rounded-full border border-yellow-400/25 bg-yellow-400/10 px-3 py-1 text-yellow-400 shadow-sm shadow-yellow-400/10">
-            Workout
-          </span>
-          <span class="rounded-full border border-emerald-400/25 bg-emerald-400/10 px-3 py-1 text-emerald-300 shadow-sm shadow-emerald-400/10">
-            PR
-          </span>
-          <span class="rounded-full border border-cyan-400/25 bg-cyan-400/10 px-3 py-1 text-cyan-300 shadow-sm shadow-cyan-400/10">
-            Foto
-          </span>
+      <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <p class="text-sm font-black text-zinc-100">Compartí tu progreso</p>
+          @if (currentUserName()) {
+            <p class="text-xs font-medium text-zinc-500">Publicando como {{ currentUserName() }}</p>
+          }
         </div>
 
-        <button
-          class="rounded-full bg-yellow-400 px-5 py-2 text-sm font-black text-zinc-950 opacity-70 shadow-lg shadow-yellow-400/10"
-          type="button"
-          disabled
+        <div class="flex gap-2 text-[11px] font-black uppercase tracking-[0.2em]" aria-label="Tipo de publicación">
+          <button
+            [class]="'rounded-full border px-3 py-1 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-yellow-400/20 ' + (type() === 'WORKOUT' ? 'border-yellow-400 bg-yellow-400 text-zinc-950' : 'border-yellow-400/25 bg-yellow-400/10 text-yellow-400')"
+            type="button"
+            (click)="setType('WORKOUT')"
+          >
+            Workout
+          </button>
+
+          <button
+            [class]="'rounded-full border px-3 py-1 transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-400/20 ' + (type() === 'PROGRESS_PHOTO' ? 'border-cyan-300 bg-cyan-300 text-zinc-950' : 'border-cyan-400/25 bg-cyan-400/10 text-cyan-300')"
+            type="button"
+            (click)="setType('PROGRESS_PHOTO')"
+          >
+            Progreso
+          </button>
+        </div>
+      </div>
+
+      <textarea
+        class="min-h-28 w-full resize-none rounded-2xl border border-yellow-400/20 bg-zinc-900/80 px-4 py-3 text-sm font-medium text-zinc-100 shadow-inner shadow-black/20 outline-none transition placeholder:text-zinc-600 focus:border-yellow-400/60 focus:ring-4 focus:ring-yellow-400/10"
+        maxlength="4000"
+        placeholder="¿Qué entrenaste hoy?"
+        [value]="caption()"
+        [disabled]="isSubmitting()"
+        (input)="caption.set($any($event.target).value)"
+      ></textarea>
+
+      @if (isWorkout()) {
+        <label class="mt-3 block text-xs font-black uppercase tracking-[0.18em] text-zinc-500" for="post-workout-session">
+          Entrenamiento existente
+        </label>
+        <select
+          id="post-workout-session"
+          class="mt-2 w-full rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm font-bold text-zinc-200 outline-none transition focus:border-yellow-400/60 focus:ring-4 focus:ring-yellow-400/10 disabled:cursor-not-allowed disabled:opacity-60"
+          [value]="selectedWorkoutSessionId()"
+          [disabled]="isSubmitting() || isLoadingSessions()"
+          (change)="selectedWorkoutSessionId.set($any($event.target).value)"
         >
-          Publicar
+          <option value="">Seleccioná una sesión</option>
+          @for (session of workoutSessions(); track session.id) {
+            <option [value]="session.id">
+              {{ session.routine?.name || 'Entrenamiento sin rutina' }} · {{ session.startedAt | date:'short' }}
+            </option>
+          }
+        </select>
+
+        @if (!isLoadingSessions() && workoutSessions().length === 0) {
+          <p class="mt-2 text-xs font-medium text-yellow-400">No hay sesiones disponibles para publicar.</p>
+        }
+      }
+
+      @if (errorMessage()) {
+        <p class="mt-3 rounded-2xl border border-red-400/20 bg-red-400/10 px-4 py-3 text-sm font-bold text-red-300">
+          {{ errorMessage() }}
+        </p>
+      }
+
+      <div class="mt-4 flex items-center justify-between gap-4">
+        <p class="text-xs font-medium text-zinc-500">El autor se toma de tu sesión, no del formulario.</p>
+
+        <button
+          class="rounded-full bg-yellow-400 px-5 py-2 text-sm font-black text-zinc-950 shadow-lg shadow-yellow-400/10 transition hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-60"
+          type="button"
+          [disabled]="!canSubmit()"
+          (click)="submit()"
+        >
+          {{ isSubmitting() ? 'Publicando…' : 'Publicar' }}
         </button>
       </div>
     </div>

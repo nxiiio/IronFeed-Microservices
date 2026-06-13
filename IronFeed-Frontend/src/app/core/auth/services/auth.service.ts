@@ -15,11 +15,19 @@ export class AuthService {
 
   private readonly http = inject(HttpClient);
   private readonly authStorage = inject(AuthStorageService);
-  
-  // puede ser sessionStorage o localStorage
-  private readonly sessionState = signal<AuthSession | null>(this.authStorage.readSession()); 
 
-  readonly currentUser = computed(() => this.sessionState()?.user ?? null);
+  // puede ser sessionStorage o localStorage
+  private readonly sessionState = signal<AuthSession | null>(this.authStorage.readSession());
+
+  readonly currentUser = computed(() => {
+    const session = this.sessionState();
+
+    if (!session || this.isExpired(session)) {
+      return null;
+    }
+
+    return session.user;
+  });
 
   login(credentials: LoginRequest, usePersistentSession: boolean): Observable<LoginResponse> {
     return this.http
@@ -33,11 +41,11 @@ export class AuthService {
   }
 
   getAccessToken(): string | null {
-    return this.sessionState()?.accessToken ?? null;
+    return this.getValidSession()?.accessToken ?? null;
   }
 
   hasSession(): boolean {
-    return this.sessionState() !== null;
+    return this.getValidSession() !== null;
   }
 
   private saveSession(response: LoginResponse, usePersistentSession: boolean): void {
@@ -45,10 +53,30 @@ export class AuthService {
       accessToken: response.accessToken,
       tokenType: response.tokenType,
       expiresIn: response.expiresIn,
+      expiresAt: Date.now() + response.expiresIn * 1000,
       user: response.user
     };
 
     this.sessionState.set(session);
     this.authStorage.saveSession(session, usePersistentSession);
+  }
+
+  private getValidSession(): AuthSession | null {
+    const session = this.sessionState();
+
+    if (!session) {
+      return null;
+    }
+
+    if (this.isExpired(session)) {
+      this.logout();
+      return null;
+    }
+
+    return session;
+  }
+
+  private isExpired(session: AuthSession): boolean {
+    return session.expiresAt <= Date.now();
   }
 }
