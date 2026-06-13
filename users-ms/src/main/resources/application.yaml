@@ -1,6 +1,10 @@
 server:
   port: 8081
 
+app:
+  name: users-ms
+  version: 0.0.1-SNAPSHOT
+
 spring:
   output:
     ansi:
@@ -29,3 +33,10 @@ security:
     issuer: users-ms
     secret: ${JWT_SECRET}
     expiration-minutes: 60
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+  packages-to-scan: cl.worellana.users_ms.controller

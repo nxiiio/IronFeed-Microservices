@@ -5,7 +5,14 @@
     <section class="border-r border-zinc-800/80 bg-zinc-950/55">
       <app-feed-header />
 
-      <app-post-composer />
+      <app-post-composer
+        [workoutSessions]="workoutSessions()"
+        [currentUserName]="currentUser()?.username ?? null"
+        [isSubmitting]="isPublishing()"
+        [isLoadingSessions]="isLoadingWorkoutSessions()"
+        [errorMessage]="publishErrorMessage()"
+        (publish)="publishPost($event)"
+      />
 
       @if (isLoading()) {
         <app-feed-loading-skeleton />

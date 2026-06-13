@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { CreateCommentRequest, Feed, Post, PostComment } from '../../shared/models';
+import { CreateCommentRequest, CreatePostRequest, Feed, Post, PostComment } from '../../shared/models';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +23,10 @@ export class PostsService {
 
   findById(postId: string): Observable<Post> {
     return this.http.get<Post>(`${this.postsPageUrl}/${postId}`);
+  }
+
+  createPost(request: CreatePostRequest): Observable<Post> {
+    return this.http.post<Post>(this.postsPageUrl, request);
   }
 
   findCommentsByPostId(postId: string): Observable<PostComment[]> {

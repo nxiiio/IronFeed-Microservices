@@ -17,10 +17,24 @@ spring:
               predicates:
                 - Path=/api/auth/**
 
+            - id: users-ms-info
+              uri: http://localhost:8081
+              predicates:
+                - Path=/api/users/info
+              filters:
+                - RewritePath=/api/users/info, /
+
             - id: users-ms
               uri: http://localhost:8081
               predicates:
                 - Path=/api/users/**
+
+            - id: users-ms-api-docs
+              uri: http://localhost:8081
+              predicates:
+                - Path=/v3/api-docs/users
+              filters:
+                - RewritePath=/v3/api-docs/users, /v3/api-docs
 
             - id: workout-ms-routines
               uri: http://localhost:8082
@@ -42,15 +56,57 @@ spring:
               predicates:
                 - Path=/api/personal-records/**
 
+            - id: workout-ms-info
+              uri: http://localhost:8082
+              predicates:
+                - Path=/api/workout/info
+              filters:
+                - RewritePath=/api/workout/info, /
+
+            - id: workout-ms-api-docs
+              uri: http://localhost:8082
+              predicates:
+                - Path=/v3/api-docs/workout
+              filters:
+                - RewritePath=/v3/api-docs/workout, /v3/api-docs
+
             - id: social-ms-follows
               uri: http://localhost:8083
               predicates:
                 - Path=/api/follows/**
 
+            - id: social-ms-info
+              uri: http://localhost:8083
+              predicates:
+                - Path=/api/social/info
+              filters:
+                - RewritePath=/api/social/info, /
+
+            - id: social-ms-api-docs
+              uri: http://localhost:8083
+              predicates:
+                - Path=/v3/api-docs/social
+              filters:
+                - RewritePath=/v3/api-docs/social, /v3/api-docs
+
+            - id: posts-ms-info
+              uri: http://localhost:8084
+              predicates:
+                - Path=/api/posts/info
+              filters:
+                - RewritePath=/api/posts/info, /
+
             - id: posts-ms
               uri: http://localhost:8084
               predicates:
                 - Path=/api/posts/**
+
+            - id: posts-ms-api-docs
+              uri: http://localhost:8084
+              predicates:
+                - Path=/v3/api-docs/posts
+              filters:
+                - RewritePath=/v3/api-docs/posts, /v3/api-docs
 
 management:
   endpoints:
@@ -62,3 +118,19 @@ security:
   jwt:
     issuer: users-ms
     secret: ${JWT_SECRET}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: users-ms
+        url: /v3/api-docs/users
+      - name: workout-ms
+        url: /v3/api-docs/workout
+      - name: social-ms
+        url: /v3/api-docs/social
+      - name: posts-ms
+        url: /v3/api-docs/posts
+    urls-primary-name: users-ms
