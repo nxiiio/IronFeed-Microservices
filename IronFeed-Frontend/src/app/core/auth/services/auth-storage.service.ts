@@ -53,11 +53,27 @@ export class AuthStorageService {
     }
 
     try {
-      return JSON.parse(rawSession) as AuthSession;
+      const session = JSON.parse(rawSession) as Partial<AuthSession>;
+
+      if (!this.isValidSession(session)) {
+        browserStorage.removeItem(AUTH_SESSION_KEY);
+        return null;
+      }
+
+      return session;
     } catch {
       browserStorage.removeItem(AUTH_SESSION_KEY);
       return null;
     }
+  }
+
+  private isValidSession(session: Partial<AuthSession>): session is AuthSession {
+    return typeof session.accessToken === 'string' &&
+      typeof session.tokenType === 'string' &&
+      typeof session.expiresIn === 'number' &&
+      typeof session.expiresAt === 'number' &&
+      session.expiresAt > Date.now() &&
+      session.user !== undefined;
   }
 
   private getSessionStorageTarget(usePersistentSession: boolean): Storage {

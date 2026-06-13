@@ -16,5 +16,6 @@ export interface AuthSession {
   accessToken: string;
   tokenType: string;
   expiresIn: number;
+  expiresAt: number;
   user: AppUser;
 }

@@ -9,10 +9,24 @@ spring:
               predicates:
                 - Path=/api/auth/**
 
+            - id: users-ms-info
+              uri: http://users-ms:8081
+              predicates:
+                - Path=/api/users/info
+              filters:
+                - RewritePath=/api/users/info, /
+
             - id: users-ms
               uri: http://users-ms:8081
               predicates:
                 - Path=/api/users/**
+
+            - id: users-ms-api-docs
+              uri: http://users-ms:8081
+              predicates:
+                - Path=/v3/api-docs/users
+              filters:
+                - RewritePath=/v3/api-docs/users, /v3/api-docs
 
             - id: workout-ms-routines
               uri: http://workout-ms:8082
@@ -34,12 +48,54 @@ spring:
               predicates:
                 - Path=/api/personal-records/**
 
+            - id: workout-ms-info
+              uri: http://workout-ms:8082
+              predicates:
+                - Path=/api/workout/info
+              filters:
+                - RewritePath=/api/workout/info, /
+
+            - id: workout-ms-api-docs
+              uri: http://workout-ms:8082
+              predicates:
+                - Path=/v3/api-docs/workout
+              filters:
+                - RewritePath=/v3/api-docs/workout, /v3/api-docs
+
             - id: social-ms-follows
               uri: http://social-ms:8083
               predicates:
                 - Path=/api/follows/**
 
+            - id: social-ms-info
+              uri: http://social-ms:8083
+              predicates:
+                - Path=/api/social/info
+              filters:
+                - RewritePath=/api/social/info, /
+
+            - id: social-ms-api-docs
+              uri: http://social-ms:8083
+              predicates:
+                - Path=/v3/api-docs/social
+              filters:
+                - RewritePath=/v3/api-docs/social, /v3/api-docs
+
+            - id: posts-ms-info
+              uri: http://posts-ms:8084
+              predicates:
+                - Path=/api/posts/info
+              filters:
+                - RewritePath=/api/posts/info, /
+
             - id: posts-ms
               uri: http://posts-ms:8084
               predicates:
                 - Path=/api/posts/**
+
+            - id: posts-ms-api-docs
+              uri: http://posts-ms:8084
+              predicates:
+                - Path=/v3/api-docs/posts
+              filters:
+                - RewritePath=/v3/api-docs/posts, /v3/api-docs
