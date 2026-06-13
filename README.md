@@ -25,7 +25,7 @@ docker compose up -d --build
 4. Abrir Swagger desde el API Gateway:
 
 ```text
-http://localhost:8080/api/docs/swagger-ui.html
+http://localhost:8080/api/swagger-ui.html
 ```
 
 El detalle de los endpoints de negocio se consulta desde Swagger.
@@ -118,11 +118,11 @@ La documentación OpenAPI se publica desde el API Gateway. Los endpoints de nego
 
 | Recurso | URL |
 |---|---|
-| Swagger UI agregado | `http://localhost:8080/api/docs/swagger-ui.html` |
-| OpenAPI `users-ms` | `http://localhost:8080/api/docs/openapi/users` |
-| OpenAPI `workout-ms` | `http://localhost:8080/api/docs/openapi/workout` |
-| OpenAPI `social-ms` | `http://localhost:8080/api/docs/openapi/social` |
-| OpenAPI `posts-ms` | `http://localhost:8080/api/docs/openapi/posts` |
+| Swagger UI agregado | `http://localhost:8080/api/swagger-ui.html` |
+| OpenAPI `users-ms` | `http://localhost:8080/api/openapi/users` |
+| OpenAPI `workout-ms` | `http://localhost:8080/api/openapi/workout` |
+| OpenAPI `social-ms` | `http://localhost:8080/api/openapi/social` |
+| OpenAPI `posts-ms` | `http://localhost:8080/api/openapi/posts` |
 
 Swagger UI muestra un selector con las APIs disponibles. Desde ahí se revisan rutas, parámetros, cuerpos de request, respuestas y validaciones.
 

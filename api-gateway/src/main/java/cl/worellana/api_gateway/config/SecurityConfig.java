@@ -31,7 +31,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users/info", "/api/workout/info", "/api/social/info", "/api/posts/info").permitAll()
-                        .requestMatchers("/api/docs/**").permitAll()
+                        .requestMatchers("/api/swagger-ui.html", "/api/swagger-ui/**", "/api/openapi", "/api/openapi/**").permitAll()
                         .requestMatchers("/actuator/health", "/actuator/info").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> { }))

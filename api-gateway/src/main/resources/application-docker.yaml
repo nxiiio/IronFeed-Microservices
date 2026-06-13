@@ -24,9 +24,9 @@ spring:
             - id: users-ms-api-docs
               uri: http://users-ms:8081
               predicates:
-                - Path=/api/docs/openapi/users
+                - Path=/api/openapi/users
               filters:
-                - RewritePath=/api/docs/openapi/users, /v3/api-docs
+                - RewritePath=/api/openapi/users, /v3/api-docs
 
             - id: workout-ms-routines
               uri: http://workout-ms:8082
@@ -58,9 +58,9 @@ spring:
             - id: workout-ms-api-docs
               uri: http://workout-ms:8082
               predicates:
-                - Path=/api/docs/openapi/workout
+                - Path=/api/openapi/workout
               filters:
-                - RewritePath=/api/docs/openapi/workout, /v3/api-docs
+                - RewritePath=/api/openapi/workout, /v3/api-docs
 
             - id: social-ms-follows
               uri: http://social-ms:8083
@@ -77,9 +77,9 @@ spring:
             - id: social-ms-api-docs
               uri: http://social-ms:8083
               predicates:
-                - Path=/api/docs/openapi/social
+                - Path=/api/openapi/social
               filters:
-                - RewritePath=/api/docs/openapi/social, /v3/api-docs
+                - RewritePath=/api/openapi/social, /v3/api-docs
 
             - id: posts-ms-info
               uri: http://posts-ms:8084
@@ -96,6 +96,6 @@ spring:
             - id: posts-ms-api-docs
               uri: http://posts-ms:8084
               predicates:
-                - Path=/api/docs/openapi/posts
+                - Path=/api/openapi/posts
               filters:
-                - RewritePath=/api/docs/openapi/posts, /v3/api-docs
+                - RewritePath=/api/openapi/posts, /v3/api-docs

@@ -32,9 +32,9 @@ spring:
             - id: users-ms-api-docs
               uri: http://localhost:8081
               predicates:
-                - Path=/api/docs/openapi/users
+                - Path=/api/openapi/users
               filters:
-                - RewritePath=/api/docs/openapi/users, /v3/api-docs
+                - RewritePath=/api/openapi/users, /v3/api-docs
 
             - id: workout-ms-routines
               uri: http://localhost:8082
@@ -66,9 +66,9 @@ spring:
             - id: workout-ms-api-docs
               uri: http://localhost:8082
               predicates:
-                - Path=/api/docs/openapi/workout
+                - Path=/api/openapi/workout
               filters:
-                - RewritePath=/api/docs/openapi/workout, /v3/api-docs
+                - RewritePath=/api/openapi/workout, /v3/api-docs
 
             - id: social-ms-follows
               uri: http://localhost:8083
@@ -85,9 +85,9 @@ spring:
             - id: social-ms-api-docs
               uri: http://localhost:8083
               predicates:
-                - Path=/api/docs/openapi/social
+                - Path=/api/openapi/social
               filters:
-                - RewritePath=/api/docs/openapi/social, /v3/api-docs
+                - RewritePath=/api/openapi/social, /v3/api-docs
 
             - id: posts-ms-info
               uri: http://localhost:8084
@@ -104,9 +104,9 @@ spring:
             - id: posts-ms-api-docs
               uri: http://localhost:8084
               predicates:
-                - Path=/api/docs/openapi/posts
+                - Path=/api/openapi/posts
               filters:
-                - RewritePath=/api/docs/openapi/posts, /v3/api-docs
+                - RewritePath=/api/openapi/posts, /v3/api-docs
 
 management:
   endpoints:
@@ -121,16 +121,16 @@ security:
 
 springdoc:
   api-docs:
-    path: /api/docs/openapi
+    path: /api/openapi
   swagger-ui:
-    path: /api/docs/swagger-ui.html
+    path: /api/swagger-ui.html
     urls:
       - name: users-ms
-        url: /api/docs/openapi/users
+        url: /api/openapi/users
       - name: workout-ms
-        url: /api/docs/openapi/workout
+        url: /api/openapi/workout
       - name: social-ms
-        url: /api/docs/openapi/social
+        url: /api/openapi/social
       - name: posts-ms
-        url: /api/docs/openapi/posts
+        url: /api/openapi/posts
     urls-primary-name: users-ms
