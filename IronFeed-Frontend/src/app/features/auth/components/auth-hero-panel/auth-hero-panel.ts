@@ -10,6 +10,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   styleUrl: './auth-hero-panel.css'
 })
 export class AuthHeroPanel {
-  placeholderText = input('Espacio para imagen');
-  ariaLabel = input('Espacio para imagen principal');
+  imageSrc = input('assets/auth-login-hero.jpg');
+  ariaLabel = input('Grupo entrenando con mancuernas en una clase fitness');
 }

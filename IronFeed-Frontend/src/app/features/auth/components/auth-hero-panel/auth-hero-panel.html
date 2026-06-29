@@ -1,7 +1,5 @@
 <div class="hero-rings" aria-hidden="true"></div>
 
-<div class="hero-image-stage" [attr.aria-label]="ariaLabel()">
-  <div class="hero-image-placeholder">
-    <span>{{ placeholderText() }}</span>
-  </div>
+<div class="hero-image-stage" role="img" [attr.aria-label]="ariaLabel()">
+  <img class="hero-image" [src]="imageSrc()" alt="" aria-hidden="true" />
 </div>
